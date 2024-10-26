@@ -1,0 +1,35 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  .input {
+    border: 1px solid #e2e9f1;
+    border-radius: 4px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: #384352;
+  }
+  input {
+    outline: none;
+    width: 100%;
+    border: none;
+    font: 400 30px/2 "PT Sans", sans-serif;
+  }
+  label {
+    position: relative;
+    margin-top: 16px;
+
+    &:before {
+      z-index: 10;
+      position: absolute;
+      left: 21px;
+      top: -10px;
+      content: attr(title);
+      display: block;
+      padding: 0 8px;
+      color: #435;
+      font-size: 14px;
+      background: #fff;
+      box-sizing: border-box;
+    }
+  }
+}

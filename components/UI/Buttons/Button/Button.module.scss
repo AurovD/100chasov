@@ -1,0 +1,26 @@
+.button {
+  color: var(---clr-neutral-100);
+  background-color: var(---clr-primary-400);
+  outline: none;
+  border: none;
+  border-radius: 1vmax;
+  padding: var(--size-300) 2.5rem;
+  font-size: var(--fs-button);
+  cursor: pointer;
+}
+.banner_button {
+  color: var(---clr-primary-400);
+  background-color: var(---clr-neutral-100);
+  border: 2px solid var(---clr-primary-400);
+  &:hover {
+    border: 2px solid var(---clr-neutral-100);
+    background-color: var(---clr-primary-400);
+    color: var(---clr-neutral-100);
+  }
+}
+
+@media (max-width: 500px) {
+  .button {
+    padding: 10px 20px !important;
+  }
+}

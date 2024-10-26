@@ -1,0 +1,31 @@
+.header {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 83px;
+  .logo {
+
+  }
+  .logo_mobile {
+    display: none;
+  }
+  .auth {
+    color: #ff0083;
+    gap: var(--size-500);
+    font-size: var(--fs-300);
+    font-weight: 700;
+    p {
+      cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .header {
+    .logo {
+      display: none;
+    }
+    .logo_mobile {
+      display: inline-block;
+    }
+  }
+}
