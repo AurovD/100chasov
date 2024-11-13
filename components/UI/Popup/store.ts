@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import {createStore} from '../../../store/createStore';
 import { devtools } from 'zustand/middleware'
 
 interface PopupState {
@@ -10,17 +10,17 @@ interface PopupState {
     changeContent: (title: string, content: string | JSX.Element) => void
 }
 
-const usePopupStore = create<PopupState>()(devtools((set) => ({
+const usePopupStore = createStore<PopupState>((set) => ({
     status: false,
-    changeStatus: () => set((state) =>  ({ status: !state.status}), false, "changeStatus"),
+    changeStatus: () => set((state) =>  ({ status: !state.status})),
     contents: {title: "", content: ""},
-    openPopup: () => set((state) => ({status: true}), false, "openPopup"),
-    closePopup: () => set((state) => ({status: false}), false, "closePopup"),
+    openPopup: () => set((state) => ({status: true})),
+    closePopup: () => set((state) => ({status: false})),
     changeContent: (title, content) =>
         set((state) => ({
             ...state,
             contents: { title, content },
-        }), false, "changeContent"),
-}), {serialize: { options: true },  name: "popupStore"}))
+        })),
+}), "Popup")
 export default usePopupStore;
 

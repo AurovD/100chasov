@@ -7,8 +7,22 @@ import * as Yup from 'yup';
 import {User} from "../../../types/user";
 import 'react-phone-number-input/style.css'
 import PhoneNumberInput from "../../UI/PhoneNumberInput";
+import Button from '../../UI/Buttons/Button';
+import {useMovies} from "../../../store/user";
+
+
+// async function test ()  {
+//     try {
+//         await fetch("http://localhost:3001/api/user/test");
+//     } catch (e) {
+//         console.log(e)
+//     }
+// }
 
 const Login: NextPage = () => {
+
+    const login = useMovies
+
     return (
         <>
             <Formik
@@ -16,19 +30,21 @@ const Login: NextPage = () => {
                     phone: '',
                 }}
                 validationSchema={Yup.object({
-
+                    phone: Yup.string().required("Обязательное поле")
+                        .max(12, "Неверный формат")
+                        .min(12, "Неверный формат")
                 })}
-                onSubmit={(values: User) => {
-                    console.log(values);
+                onSubmit={(values: { phone: string }) => {
+                    // test();
                 }}
             >
                 {(formProps) => (
                     <Form className={clsx(styles.form)} >
                         <label htmlFor="phone" title={"Ваш телефон"}>
                             <Field className={clsx(styles.input)} name="phone" component={PhoneNumberInput} />
-                            <ErrorMessage name="phone" component="div" className="error" />
+                            <ErrorMessage name="phone" component="div" className={clsx(styles.error)} />
                         </label>
-                        <button type="submit">Войти</button>
+                        <Button>Войти</Button>
                     </Form>
                 )}
         </Formik>

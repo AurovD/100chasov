@@ -10,7 +10,6 @@ interface ButtonProps {
 }
 
 const Button: FC<ButtonProps> = ({children, action, className}) => {
-    console.log(className);
     return (
         <button className={clsx(styles.button, className && styles[className])} onClick={action}>
             {children}

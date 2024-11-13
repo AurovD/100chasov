@@ -14,7 +14,7 @@ const PhoneNumberInput: React.FC<FieldProps> = ({ field, form, ...props }) => {
                 defaultCountry="RU" // Set the default country for formatting
                 onChange={(value) => form.setFieldValue(field.name, value)} // Update Formik field value
             />
-            <ErrorMessage name={field.name} component="div" className="error" />
+            {/*<ErrorMessage name={field.name} component="div" className="error" />*/}
         </div>
     );
 };
