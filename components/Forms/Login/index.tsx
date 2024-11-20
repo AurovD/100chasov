@@ -8,7 +8,8 @@ import {User} from "../../../types/user";
 import 'react-phone-number-input/style.css'
 import PhoneNumberInput from "../../UI/PhoneNumberInput";
 import Button from '../../UI/Buttons/Button';
-import {useMovies} from "../../../store/user";
+import {useUserStore} from "../../../store";
+// import {useMovies} from "../../../store/user";
 
 
 // async function test ()  {
@@ -21,7 +22,7 @@ import {useMovies} from "../../../store/user";
 
 const Login: NextPage = () => {
 
-    const login = useMovies
+    const [login] = useUserStore(state => [state.login]);
 
     return (
         <>
@@ -36,6 +37,7 @@ const Login: NextPage = () => {
                 })}
                 onSubmit={(values: { phone: string }) => {
                     // test();
+                    login(values.phone, true);
                 }}
             >
                 {(formProps) => (

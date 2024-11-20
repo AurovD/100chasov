@@ -7,6 +7,7 @@ interface ButtonProps {
     children: React.ReactNode;
     action?: React.MouseEventHandler<HTMLButtonElement>;
     className?: string;
+    type?: "button" | "submit";
 }
 
 const Button: FC<ButtonProps> = ({children, action, className}) => {

@@ -16,9 +16,13 @@ export const useLogin = createStore<UserStore>((set, get) => ({
                 user: {},
             })
         }
-
+        
         try {
-            const data = await fetchRequest("http://localhost:3001/api/user/test");
+            const data = await fetchRequest(
+              "http://localhost:3001/api/user/login",
+                "GET",
+                { phone } );
+            console.log(data);
         } catch (error) {
 
         }
