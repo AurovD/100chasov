@@ -7,7 +7,6 @@ declare module 'express' {
 
 class UserController {
     async login (req: express.RequestUser, res: express.Response) {
-        console.log(req.body, "ljl");
         return res.status(200).json({kjhl: "hi"});
     }
 }

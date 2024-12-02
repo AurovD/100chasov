@@ -10,7 +10,7 @@ export async function fetchRequest<T>(
             "Content-Type": "application/json",
             "Accept": "application/json",
         },
-        body: body && JSON.stringify(body),
+        body: JSON.stringify(body),
     };
     console.log(url, options)
     const response = await window.fetch(url, options);

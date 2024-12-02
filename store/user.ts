@@ -20,7 +20,7 @@ export const useLogin = createStore<UserStore>((set, get) => ({
         try {
             const data = await fetchRequest(
               "http://localhost:3001/api/user/login",
-                "GET",
+                "POST",
                 { phone } );
             console.log(data);
         } catch (error) {
