@@ -3,7 +3,6 @@ import Header from "../components/Header";
 import Button from "../components/UI/Buttons/Button";
 import React, {useState} from "react";
 import usePopupStore from "../components/UI/Popup/store";
-import BannerButton from "../components/UI/Buttons/Button";
 
 const Home: NextPage = () => {
     const popup = usePopupStore((state) => state.status);
@@ -44,9 +43,9 @@ const Home: NextPage = () => {
             <p>Это интернет-аукцион, где вы можете купить любой товар за 1/100 от его цены. Каждый час всё, что мы
                 продаём,
                 дешевеет на 1%, а по какой цене сделать ставку, решаете вы.</p>
-            <BannerButton action={handleEvent} className="banner_button">
-                {/*<BannerButton text={"Как это работает?"}/>*/}{"Как это работает?"}
-            </BannerButton>
+            <Button action={handleEvent} className="banner_button">
+                {"Как это работает?"}
+            </Button>
         </div>
     </div>
   )
