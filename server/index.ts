@@ -8,10 +8,10 @@ let corsOptions = {
 
 
 const app = express();
-// dotenv.config({
-//     path: 'server/.env'
-// });
-// import './core/db';
+dotenv.config({
+    path: 'server/.env'
+});
+import './core/db';
 
 // app.use(cors());
 app.use(cors(corsOptions));

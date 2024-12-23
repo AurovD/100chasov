@@ -1,12 +1,19 @@
 import express from 'express';
+import {User} from "../../types/user";
+import {string} from "yup";
+
+
 declare module 'express' {
-    interface RequestUser {
-        body: {phone: string}
+    interface Request {
+        body:Pick<User, 'phone'>
     }
 }
 
 class UserController {
-    async login (req: express.RequestUser, res: express.Response) {
+    async activate (req: express.Request, res: express.Response): Promise<any> {
+        return res.status(200).json({kjhl: "hi"});
+    }
+    async code (req: express.Request, res: express.Response): Promise<any> {
         return res.status(200).json({kjhl: "hi"});
     }
 }
