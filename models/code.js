@@ -1,7 +1,3 @@
-'use strict';
-const {
-    Model
-} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Codes extends Model {
         /**
@@ -15,8 +11,9 @@ module.exports = (sequelize, DataTypes) => {
 
     Codes.init({
         phone: {
-            type: DataTypes.STRING,
-            allowNull: false,
+          type: DataTypes.STRING,
+          unique: true,
+          allowNull: false,
         },
         code: {
             type: DataTypes.STRING,
@@ -30,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'Codes',
         timestamps: true,
+      paranoid: true,
+      indexes: [
+        { fields: ['code'], unique: true},
+        { fields: ['phone'], unique: true}
+      ]
     });
 
     return Codes;

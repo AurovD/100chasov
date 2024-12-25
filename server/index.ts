@@ -28,3 +28,12 @@ app.use('/api', router);
 app.listen(3001, () => {
     console.log('server running');
 });
+
+
+'use strict';
+const {
+    Model
+} = require('sequelize');
+
+
+

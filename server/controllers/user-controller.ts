@@ -1,6 +1,5 @@
 import express from 'express';
 import {User} from "../../types/user";
-import {string} from "yup";
 
 
 declare module 'express' {

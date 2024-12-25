@@ -1,12 +1,9 @@
 import type { NextPage } from 'next'
-import Header from "../components/Header";
-import Button from "../components/UI/Buttons/Button";
-import React, {useState} from "react";
-import usePopupStore from "../components/UI/Popup/store";
-import Banner from "../components/Banner";
+import usePopupStore from "../UI/Popup/store";
+import Button from "../UI/Buttons/Button";
+import React from "react";
 
 const Home: NextPage = () => {
-    const popup = usePopupStore((state) => state.status);
     const openPopup = usePopupStore((state) => state.openPopup);
     const changeContent = usePopupStore((state) => state.changeContent);
 
@@ -35,12 +32,18 @@ const Home: NextPage = () => {
         changeContent("Как это работает?", banner);
     };
 
-  return (
-    <div className={popup ? "visible" : ""}>
-        <Header/>
-        <Banner/>
-    </div>
-  )
+    return (
+        <div className="banner">
+            <div className="wrapper"></div>
+            <h1>Приветствуем вас на сайте «100 часов»</h1>
+            <p>Это интернет-аукцион, где вы можете купить любой товар за 1/100 от его цены. Каждый час всё, что мы
+                продаём,
+                дешевеет на 1%, а по какой цене сделать ставку, решаете вы.</p>
+            <Button action={handleEvent} className="banner_button">
+                {"Как это работает?"}
+            </Button>
+        </div>
+    )
 }
 
 export default Home;
