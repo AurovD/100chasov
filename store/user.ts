@@ -5,27 +5,29 @@ import {User} from "../types/user";
 
 export interface UserStore {
     user: User | {};
-    login: (phone: string, reload?: boolean ) => void
+    login: (phone: string, reload?: boolean ) => Promise<unknown>
 }
 
 export const useLogin = createStore<UserStore>((set, get) => ({
     user: {},
-    login: async (phone, reload) => {
-        if(reload) {
+    login: async (phone: string, reload?: boolean) => {
+        if (reload) {
             set({
                 user: {},
-            })
+            });
         }
-        
+
         try {
             const data = await fetchRequest(
-              "http://localhost:3001/api/user/login",
+                "http://localhost:3001/api/user/code",
                 "POST",
-                { phone } );
+                { phone }
+            );
             console.log(data);
+            return data;
         } catch (error) {
-
+            console.error(error);
+            throw error;
         }
-
-    }
+    },
 }), "User");

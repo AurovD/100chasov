@@ -10,6 +10,7 @@
     "lint": "eslint . --config /Users/aurovdm/Documents/pets/100chasov/.eslintrc.json"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.62.11",
     "@types/express": "^5.0.0",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
