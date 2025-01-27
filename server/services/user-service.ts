@@ -7,15 +7,24 @@ dotenv.config({
 })
 
 
+// https://chatgpt.com/share/6797a7a2-ebb4-8009-9670-f0a10565dfbc
+
 class UserService {
-    async findCode(code: string) {
-        return await Codes.findOne({
+    async findCodes(phone: string) {
+        return await Codes.findAll({
             where: {
-                code
+                phone
             },
-            attributes: ["code"]
+            // attributes: ["code"]
+        });
+    }
+    async createCode(phone: string, code: string) {
+        return await Codes.create({
+            code,
+            phone,
         });
     }
 }
+
 
 export default new UserService();

@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'Codes',
         timestamps: true,
-      paranoid: true,
+      // paranoid: true,
       indexes: [
         { fields: ['code'], unique: true},
         { fields: ['phone'], unique: true}
