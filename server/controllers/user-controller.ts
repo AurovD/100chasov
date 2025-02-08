@@ -1,7 +1,7 @@
 import express from 'express';
 import {User} from "../../types/user";
-import login from "../../components/Forms/Login";
 import UserService from "../services/user-service";
+import PassportService from "../services/passport-service";
 
 
 declare module 'express' {
@@ -25,10 +25,11 @@ class UserController {
 
         try {
             let oldUserRecords = await UserService.findCodes(phone);
-            console.log(oldUserRecords, ";k;k");
             if(oldUserRecords.length === 0) {
-                let newRecord = await UserService.createCode(phone, smsCode);
-                console.log(newRecord);
+                let temp_token = await PassportService.generateTemporaryToken(smsCode);
+                console.log(temp_token);
+                // let newRecord = await UserService.createCode(phone, smsCode);
+                // console.log(newRecord);
             }
         } catch (err) {
             console.log(err);
