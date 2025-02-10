@@ -52,8 +52,14 @@ class PassportService {
     // }
     // validateRefreshToken(token) {
     // }
-    // validateTemporaryToken(token) {
-    // }
+    validateTemporaryToken(token: string) {
+        try {
+            const userData = jwt.verify(token, process.env.JWT_TEMPORARY_SECRET || '');
+            return userData;
+        } catch (e) {
+            return null;
+        }
+    }
     // async findToken(id) {
     // }
     // async deleteToken(token) {

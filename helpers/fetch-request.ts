@@ -1,3 +1,4 @@
+import {log} from "node:util";
 
 export async function fetchRequest<T>(
     url: string,
@@ -12,11 +13,9 @@ export async function fetchRequest<T>(
         },
         body: JSON.stringify(body),
     };
-    console.log(url, options)
     const response = await window.fetch(url, options);
-    console.log(response, "khl");
     if (!response.ok) {
-        throw new Error(`Error`);
+        return  await response.json();
     }
 
     return await response.json();

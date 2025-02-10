@@ -23,11 +23,10 @@ export const useLogin = createStore<UserStore>((set, get) => ({
                 "POST",
                 { phone }
             );
-            console.log(data);
             return data;
         } catch (error) {
-            console.error(error);
-            throw error;
+            console.log(error, "ljlj;");
+            // throw error;
         }
     },
 }), "User");

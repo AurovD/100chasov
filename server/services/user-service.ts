@@ -15,14 +15,20 @@ class UserService {
             where: {
                 phone
             },
-            // attributes: ["code"]
+            raw: true
         });
     }
-    async createCode(phone: string, code: string) {
+    async createCode(phone: string, code: string, token: string) {
         return await Codes.create({
             code,
             phone,
+            temporary_token: token
         });
+    }
+    async deleteCode(phone: string) {
+        return await Codes.destroy({
+            phone
+        })
     }
 }
 

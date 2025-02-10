@@ -25,11 +25,13 @@ class UserController {
 
         try {
             let oldUserRecords = await UserService.findCodes(phone);
+            if(oldUserRecords.length > 0){
+                await PassportService.validateTemporaryToken(oldUserRecords)
+            }
             if(oldUserRecords.length === 0) {
-                let temp_token = await PassportService.generateTemporaryToken(smsCode);
-                console.log(temp_token);
-                // let newRecord = await UserService.createCode(phone, smsCode);
-                // console.log(newRecord);
+                let temp_token: string = await PassportService.generateTemporaryToken(smsCode);
+                let newRecord = await UserService.createCode(phone, smsCode, temp_token);
+                // console.log();
             }
         } catch (err) {
             console.log(err);
