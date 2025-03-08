@@ -11,7 +11,7 @@ dotenv.config({
 
 class UserService {
     async findCodes(phone: string) {
-        return await Codes.findAll({
+        return await Codes.findOne({
             where: {
                 phone
             },
@@ -27,7 +27,9 @@ class UserService {
     }
     async deleteCode(phone: string) {
         return await Codes.destroy({
-            phone
+            where: {
+                phone
+            }
         })
     }
 }

@@ -2,42 +2,51 @@ import express from 'express';
 import {User} from "../../types/user";
 import UserService from "../services/user-service";
 import PassportService from "../services/passport-service";
+import {JwtPayload} from "jsonwebtoken";
 
 
 declare module 'express' {
     interface Request {
-        body:Pick<User, 'phone'>
+        body: Pick<User, 'phone'>
     }
 }
 
 class UserController {
     async activate (req: express.Request, res: express.Response): Promise<any> {
-        return res.status(200).json({kjhl: "hi"});
+        return res.status(200).json({ success: true });
     }
     async code (req: express.Request, res: express.Response): Promise<any> {
         const phone: string = req.body.phone;
-        const smsCode:string = `${Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000}`;
         if (!phone) {
-            return res.status(400).json({
-                message: 'Номер телефона не указан',
-            });
+            return res.status(400).json();
         }
-
+        return res.status(500).json();
         try {
-            let oldUserRecords = await UserService.findCodes(phone);
-            if(oldUserRecords.length > 0){
-                await PassportService.validateTemporaryToken(oldUserRecords)
+            let oldUserRecord = await UserService.findCodes(phone);
+            if(oldUserRecord){
+                let token: string | JwtPayload | null =
+                  PassportService.validateTemporaryToken(
+                    oldUserRecord.temporary_token,
+                  );
+                if(!token){
+                    await UserService.deleteCode(phone);
+                }
+                return res.status(200).json();
             }
-            if(oldUserRecords.length === 0) {
-                let temp_token: string = await PassportService.generateTemporaryToken(smsCode);
-                let newRecord = await UserService.createCode(phone, smsCode, temp_token);
-                // console.log();
-            }
+            const smsCode:string = `${Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000}`;
+            let temp_token: string = PassportService.generateTemporaryToken(smsCode);
+            // await UserService.createCode(phone, smsCode, temp_token);
+            res
+              .status(200)
+              .cookie("token", temp_token, {
+                httpOnly: true,
+                secure: false,
+                sameSite: "lax",
+                maxAge: 1800000,
+              }).json({ success: true });
         } catch (err) {
-            console.log(err);
+            return res.status(500).json();
         }
-
-        return res.status(200).json({kjhl: "hi"});
     }
 }
 export default new UserController();

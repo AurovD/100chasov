@@ -3,7 +3,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 
 let corsOptions = {
-    origin: '*'
+    origin: "http://localhost:3000",
+    credentials: true,
 };
 
 

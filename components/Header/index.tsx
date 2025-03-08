@@ -5,33 +5,30 @@ import Link from 'next/link';
 import Button from "../UI/Buttons/Button";
 import React from "react";
 import usePopupStore from "../UI/Popup/store";
-import Login from "../Forms/Login";
-import {Popup} from "../UI/Popup";
+import Phone from "../UI/Popups/Phone";
 
 const Header: NextPage = () => {
 
-    // const popupChange = usePopupStore((state) => state.changeStatus);
-    // const popup = usePopupStore((state) => state.status);
     const openPopup = usePopupStore((state) => state.openPopup);
     const changeContent = usePopupStore((state) => state.changeContent);
 
-    const login = <Login/>
+    const phone = <Phone/>
 
-    const handleLoginEvent = () => {
+    const handlePhoneEvent = () => {
         openPopup();
-        changeContent("Вход", login);
+        changeContent("Вход", phone);
     };
 
     return (
         <div className={clsx("wrapper d-flex justify-content-between align-items-center", styles.header)}>
-            <Link href="/">
-                <img className={clsx(styles.logo)} src="assets/logo.svg" alt="100chasov"/>
+            <Link href="/" className={clsx(styles.logo)}>
+                <img src="assets/logo.svg" alt="100chasov"/>
             </Link>
-            <Link href="/">
-                <img className={clsx(styles.logo_mobile)} src="assets/logo_mobile.svg" alt="100chasov"/>
+            <Link className={clsx(styles.logo_mobile)} href="/">
+                <img src="assets/logo_mobile.svg" alt="100chasov"/>
             </Link>
             <div className={clsx("d-flex justify-content-between align-items-center", styles.auth)}>
-                <Button action={handleLoginEvent}>Вход</Button>
+                <Button action={handlePhoneEvent}>Вход</Button>
             </div>
         </div>
     )

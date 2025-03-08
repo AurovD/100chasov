@@ -1,4 +1,4 @@
-import {log} from "node:util";
+
 
 export async function fetchRequest<T>(
     url: string,
@@ -11,12 +11,12 @@ export async function fetchRequest<T>(
             "Content-Type": "application/json",
             "Accept": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(body),
     };
-    const response = await window.fetch(url, options);
-    if (!response.ok) {
-        return  await response.json();
-    }
-
-    return await response.json();
+        const response = await window.fetch(url, options);
+        if (!response.ok) {
+            throw new Error();
+        }
+        return await response.json();
 }
