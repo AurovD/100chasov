@@ -1,0 +1,17 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  .input {
+    border: 1px solid var(---clr-neutral-200);
+    border-radius: 4px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    color: #384352;
+  }
+  input {
+    outline: none;
+    width: 100%;
+    border: none;
+    font: 400 30px/2 "PT Sans", sans-serif;
+  }
+}

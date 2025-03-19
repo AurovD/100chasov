@@ -20,7 +20,7 @@ class UserController {
         if (!phone) {
             return res.status(400).json();
         }
-        return res.status(500).json();
+
         try {
             let oldUserRecord = await UserService.findCodes(phone);
             if(oldUserRecord){
