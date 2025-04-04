@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import React from "react";
+import React, {useEffect} from "react";
 import styles from "./Forms.module.scss";
 import clsx from "clsx";
 import {Formik, Form, Field, ErrorMessage} from "formik";
@@ -12,6 +12,7 @@ import {useMutation} from "@tanstack/react-query";
 import usePopupStore from "../../Popup/store";
 import ErrorPopup from "../ErrorPopup";
 import CodePopup from "../CodePopup";
+import LoadingPopup from "../LoadingPopup";
 
 
 const Phone: NextPage = () => {
@@ -33,6 +34,8 @@ const Phone: NextPage = () => {
         changeContent("Подтверждение", code);
     };
 
+    const loading = <LoadingPopup/>
+
     const mutation = useMutation(
         {
             mutationFn: phone,
@@ -45,8 +48,15 @@ const Phone: NextPage = () => {
         }
     );
 
+    useEffect(() => {
+        if (mutation.isPending) {
+            changeContent("Загрузка", <LoadingPopup />);
+        }
+    }, [mutation.isPending, changeContent]);
+
     return (
         <>
+            {/*{isPending && changeContent("Загрузка", loading)}*/}
             <Formik
                 initialValues={{
                     phone: '',

@@ -21,6 +21,7 @@ class UserController {
             return res.status(400).json();
         }
 
+
         try {
             let oldUserRecord = await UserService.findCodes(phone);
             if(oldUserRecord){
@@ -36,6 +37,8 @@ class UserController {
             const smsCode:string = `${Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000}`;
             let temp_token: string = PassportService.generateTemporaryToken(smsCode);
             // await UserService.createCode(phone, smsCode, temp_token);
+
+
             res
               .status(200)
               .cookie("token", temp_token, {
