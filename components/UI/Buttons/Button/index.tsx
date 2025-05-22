@@ -7,13 +7,16 @@ export interface ButtonProps {
     action?: React.MouseEventHandler<HTMLButtonElement>;
     className?: string;
     type?: "button" | "submit";
+    disabled?: boolean;
 }
 
-// interface ButtonComponent extends FC<ButtonProps> {
-//     BannerButton: FC<ButtonProps>;
-// }
-
-const Button: React.FC<ButtonProps> = ({ className, action, type = "button", children }) => {
+const Button: React.FC<ButtonProps> = ({
+                                           className,
+                                           action,
+                                           type = "button",
+                                           disabled = false,
+                                           children,
+                                       }) => {
     const combinedClassName = clsx(
         styles.button,
         className && styles[className]
@@ -24,11 +27,13 @@ const Button: React.FC<ButtonProps> = ({ className, action, type = "button", chi
             className={combinedClassName}
             onClick={action}
             type={type}
+            disabled={disabled} // <-- сюда
         >
             {children}
         </button>
     );
 };
+
 
 // Button.BannerButton = function BannerButton({ ...props }: ButtonProps) {
 //     const bannerClass = clsx(styles.bannerButton, props.className); // Добавляем уникальный стиль

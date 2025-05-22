@@ -1,22 +1,31 @@
-import type { FieldProps, useField } from 'formik';
 import React from "react";
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import type { E164Number } from 'libphonenumber-js';
 
-const PhoneNumberInput: React.FC<FieldProps> = ({ field, form, ...props }) => {
+type PhoneNumberInputProps = {
+    name: string;
+    value: E164Number | undefined;
+    onChange: (value: E164Number | undefined) => void;
+    className?: string;
+};
+
+const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({
+                                                               name,
+                                                               value,
+                                                               onChange,
+                                                               className,
+                                                           }) => {
     return (
-        <div>
-            <PhoneInput
-                {...field}
-                {...props}
-                placeholder={"(___)__-__-__"}
-                defaultCountry="RU" // Set the default country for formatting
-                onChange={(value) => form.setFieldValue(field.name, value)} // Update Formik field value
-            />
-            {/*<ErrorMessage name={field.name} component="div" className="error" />*/}
-        </div>
+        <PhoneInput
+            name={name}
+            value={value}
+            onChange={onChange}
+            placeholder="(___)__-__-__"
+            defaultCountry="RU"
+            className={className}
+        />
     );
 };
 
 export default PhoneNumberInput;
-
