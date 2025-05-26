@@ -1,12 +1,12 @@
-import { create } from 'zustand';
+
 import { fetchRequest } from '../helpers/fetch-request';
 import {createStore} from './createStore';
 import {User} from "../types/user";
-import login from "../components/UI/Popups/Phone";
 
 export interface UserStore {
     user: User | {};
-    phone: (phone: string, reload?: boolean ) => Promise<unknown>
+    phone: (phone: string, reload?: boolean ) => Promise<unknown>;
+    code: (code: string) => Promise<unknown>;
 }
 
 export const usePhone = createStore<UserStore>((set, get) => ({
@@ -23,7 +23,9 @@ export const usePhone = createStore<UserStore>((set, get) => ({
                 "POST",
                 { phone }
             );
-        console.log(data, "data");
         return data;
     },
+    code: async (code) => {
+        console.log(code);
+    }
 }), "User");

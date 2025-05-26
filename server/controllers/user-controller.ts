@@ -29,15 +29,15 @@ class UserController {
                   PassportService.validateTemporaryToken(
                     oldUserRecord.temporary_token,
                   );
-                if(!token){
-                    await UserService.deleteCode(phone);
+                if(token){
+                    return res.status(200).json({ success: true });
                 }
-                return res.status(200).json();
+
+                await UserService.deleteCode(phone);
             }
             const smsCode:string = `${Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000}`;
-            let temp_token: string = PassportService.generateTemporaryToken(smsCode);
+            let temp_token: string = PassportService.generateTemporaryToken(phone);
             // await UserService.createCode(phone, smsCode, temp_token);
-
 
             res
               .status(200)

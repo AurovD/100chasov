@@ -4,7 +4,7 @@ import Button from "../../Buttons/Button";
 import usePopupStore from "../../Popup/store";
 import Phone from "../Phone";
 
-const ErrorPopup: React.FC = () => {
+const ErrorPopup: React.FC = (props) => {
 
 
 

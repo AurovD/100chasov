@@ -1,13 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Formik, Field, Form, FormikHelpers } from 'formik';
-import * as Yup from 'yup';
-import clsx from "clsx";
-import Button from "../../Buttons/Button";
-import styles from "./CodePopup.module.scss";
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import clsx from 'clsx';
+import { useForm } from '@tanstack/react-form';
+import Button from '../../Buttons/Button';
+import styles from './CodePopup.module.scss';
+import { useUserStore } from '../../../../store';
+import { useMutation } from '@tanstack/react-query';
 
 const CodePopup: React.FC = () => {
-    const [time, setTime] = useState<number>(60);
+    const codeRequest = useUserStore((state) => state.code);
+    const [time, setTime] = useState<number>(15);
     const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+
+    const mutation = useMutation({
+        mutationFn: codeRequest,
+    });
 
     useEffect(() => {
         if (time > 0) {
@@ -16,27 +25,40 @@ const CodePopup: React.FC = () => {
         }
     }, [time]);
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        index: number,
-        setFieldValue: FormikHelpers<{ code: string[] }>['setFieldValue']
-    ) => {
-        const { value } = e.target;
-        if (/^\d?$/.test(value)) {
-            setFieldValue(`code[${index}]`, value);
-            if (value && index < 3 && inputRefs.current[index + 1]) {
+
+
+    useEffect(() => {
+        console.log(inputRefs.current);
+        inputRefs.current[0]?.focus();
+    }, []);
+
+    const form = useForm({
+        defaultValues: {
+            code: ['', '', '', ''],
+        },
+        // onSubmit: async ({ value }) => {
+        //     const code = value.code.join('');
+        //     console.log('Submitted code:', code);
+        // },
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number, setValue: (val: string[]) => void, currentValue: string[]) => {
+        const val = e.target.value;
+        if (/^\d?$/.test(val)) {
+            const newCode = [...currentValue];
+            newCode[index] = val;
+            setValue(newCode);
+            if (val && index < 3) {
                 inputRefs.current[index + 1]?.focus();
             }
         }
     };
 
-    const handleKeyDown = (
-        e: React.KeyboardEvent<HTMLInputElement>,
-        index: number,
-        setFieldValue: FormikHelpers<{ code: string[] }>['setFieldValue']
-    ) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number, setValue: (val: string[]) => void, currentValue: string[]) => {
         if (e.key === 'Backspace' && !e.currentTarget.value && index > 0) {
-            setFieldValue(`code[${index}]`, '');
+            const newCode = [...currentValue];
+            newCode[index] = '';
+            setValue(newCode);
             inputRefs.current[index - 1]?.focus();
         }
     };
@@ -44,42 +66,60 @@ const CodePopup: React.FC = () => {
     return (
         <div className="d-flex flex-column text-center">
             <p>Введите пароль из СМС, присланного на ваш телефон</p>
-            <Formik
-                initialValues={{ code: ['', '', '', ''] }}
-                validationSchema={Yup.object({
-                    code: Yup.array().of(Yup.string().matches(/^\d$/, 'Только цифры')),
-                })}
-                onSubmit={(values) => {
-                    const code = values.code.join('');
-                    console.log('Submitted code:', code);
-                }}
+
+            <form
+                className={clsx(styles.form)}
+                // onSubmit={(e) => {
+                //     e.preventDefault();
+                //     form.handleSubmit();
+                // }}
             >
-                {({ setFieldValue, value,  }) => (
-                    <Form className={clsx(styles.form)}>
-                        <div className="d-flex justify-content-center gap-2">
-                            {Array.from({ length: 4 }).map((_, index) => (
-                                <Field
+                <form.Field
+                    name="code"
+                    validators={{
+                        onChange: (codeArr) => {
+                            if(codeArr.value.length === 4){
+                                const code = codeArr.value.join('');
+                                mutation.mutate(code);
+                            }
+                            const hasInvalid = codeArr.value.some((c) => !/^\d?$/.test(c));
+                            if (hasInvalid) return 'Только цифры';
+                        },
+                    }}
+                >
+                    {(field) => (
+                        <div className={clsx(styles.input_group, "d-flex justify-content-between")}>
+                            {field.state.value.map((_, index) => (
+                                <input
                                     key={index}
-                                    name={`code[${index}]`}
-                                    innerRef={(el: HTMLInputElement | null) => (inputRefs.current[index] = el)}
+                                    type="text"
+                                    inputMode="numeric"
                                     maxLength={1}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e, index, setFieldValue)}
-                                    onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e, index, setFieldValue)}
+                                    ref={(el: HTMLInputElement | null) => {inputRefs.current[index] = el;}}
+                                    value={field.state.value[index]}
+                                    onChange={(e) => handleChange(e, index, field.handleChange, field.state.value)}
+                                    onKeyDown={(e) => handleKeyDown(e, index, field.handleChange, field.state.value)}
                                     className={clsx(styles.input)}
                                 />
                             ))}
                         </div>
-                        {/*<Button type="submit">Отправить</Button>*/}
-                    </Form>
-                )}
-            </Formik>
+                    )}
+                </form.Field>
+
+                {/*<Button type="submit" disabled={time === 0}>*/}
+                {/*    Отправить*/}
+                {/*</Button>*/}
+            </form>
+
             {time > 0 ? (
-                <div>Отправить код еще раз через {time} секунд</div>
+                <Button className="btn btn-link" disabled={true}>
+                        Отправить код еще раз через {time} секунд
+                    </Button>
             ) : (
                 <div>
-                    <button onClick={() => setTime(60)} className="btn btn-link">
+                    <Button className="btn btn-link">
                         Отправить код еще раз
-                    </button>
+                    </Button>
                 </div>
             )}
         </div>

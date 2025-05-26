@@ -33,9 +33,9 @@ class PassportService {
     //     }
     //
     // }
-    generateTemporaryToken(code: string): string {
+    generateTemporaryToken(phone: string): string {
         const payload = {
-            code,
+            phone,
         }
         const temporaryToken: string = jwt.sign(payload,
             process.env.JWT_TEMPORARY_SECRET || '',
@@ -68,3 +68,11 @@ class PassportService {
     // }
 }
 export default new PassportService();
+
+
+// 1. Ввод телефона → сервер возвращает временный токен
+// 2. Ввод кода + временный токен → сервер возвращает access/refresh токены и данные пользователя
+// 3. Сохраняем accessToken (в localStorage), refreshToken — в cookie (устанавливает сервер)
+// 4. Используем accessToken для запросов
+// 5. При 401 — пробуем обновить accessToken через refreshToken
+// 6. При logout — удаляем токены
