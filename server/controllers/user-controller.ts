@@ -13,12 +13,15 @@ declare module 'express' {
 
 class UserController {
     async activate (req: express.Request, res: express.Response): Promise<any> {
+        PassportService.validateTemporaryToken(
+            req.cookies.token,
+        );
         return res.status(200).json({ success: true });
     }
     async code (req: express.Request, res: express.Response): Promise<any> {
         const phone: string = req.body.phone;
         if (!phone) {
-            return res.status(400).json();
+            return res.status(400).json({ success: false, message: "Phone is required" });
         }
 
 
@@ -43,7 +46,7 @@ class UserController {
               .status(200)
               .cookie("token", temp_token, {
                 httpOnly: true,
-                secure: false,
+                secure: true,
                 sameSite: "lax",
                 maxAge: 1800000,
               }).json({ success: true });

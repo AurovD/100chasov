@@ -7,9 +7,13 @@ import Button from '../../Buttons/Button';
 import styles from './CodePopup.module.scss';
 import { useUserStore } from '../../../../store';
 import { useMutation } from '@tanstack/react-query';
+import LoadingPopup from "../LoadingPopup";
+import usePopupStore from "../../Popup/store";
 
 const CodePopup: React.FC = () => {
     const codeRequest = useUserStore((state) => state.code);
+    const changeContent = usePopupStore((state) => state.changeContent);
+
     const [time, setTime] = useState<number>(15);
     const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -28,9 +32,15 @@ const CodePopup: React.FC = () => {
 
 
     useEffect(() => {
-        console.log(inputRefs.current);
         inputRefs.current[0]?.focus();
     }, []);
+
+
+    useEffect(() => {
+        if (mutation.isPending) {
+            changeContent('Загрузка', <LoadingPopup />);
+        }
+    }, [mutation.isPending, changeContent]);
 
     const form = useForm({
         defaultValues: {
@@ -78,7 +88,8 @@ const CodePopup: React.FC = () => {
                     name="code"
                     validators={{
                         onChange: (codeArr) => {
-                            if(codeArr.value.length === 4){
+                            if(codeArr.value.length === 4 &&
+                                codeArr.value.every(char => /^\d$/.test(char))){
                                 const code = codeArr.value.join('');
                                 mutation.mutate(code);
                             }

@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 let corsOptions = {
     origin: "http://localhost:3000",
@@ -17,6 +18,9 @@ import './core/db';
 // app.use(cors());
 app.use(cors(corsOptions));
 app.use(express.json());
+
+
+app.use(cookieParser());
 
 // app.use(bodyParser.urlencoded({ extended: false }))
 // app.use(bodyParser.json())

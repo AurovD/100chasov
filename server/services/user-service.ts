@@ -7,13 +7,13 @@ dotenv.config({
 })
 
 
-// https://chatgpt.com/share/6797a7a2-ebb4-8009-9670-f0a10565dfbc
 
 class UserService {
     async findCodes(phone: string) {
+        const whereQuery = { phone };
         return await Codes.findOne({
             where: {
-                phone
+                whereQuery
             },
             raw: true
         });

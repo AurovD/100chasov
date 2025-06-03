@@ -1,23 +1,41 @@
 import passport from 'passport';
-import {Strategy as JwtStrategy, ExtractJwt, JwtFromRequestFunction} from "passport-jwt";
-import jwt from 'jsonwebtoken';
-import dotenv  from 'dotenv';
-dotenv.config({
-    path: 'server/.env'
-});
+import { Strategy as JwtStrategy, ExtractJwt, VerifiedCallback } from 'passport-jwt';
+import dotenv from 'dotenv';
+import { Request } from 'express';
 
-interface OptsTypes  {
-    jwtFromRequest: JwtFromRequestFunction<any>;
-    secretOrKey: string | undefined
+dotenv.config({ path: 'server/.env' });
+
+interface JwtPayload {
+    code: string;
+    date: number;
 }
 
-const opts: OptsTypes = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.JWT_ACCESS_SECRET
-};
+const cookieExtractor = (req: Request): string | null => req.cookies?.token || null;
 
-passport.use('jwt', new JwtStrategy(opts, function(jwt_payload: {code: string; date: number}, done) {
-    done(null, jwt_payload);
-}));
+passport.use(
+    'access-jwt',
+    new JwtStrategy(
+        {
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            secretOrKey: process.env.JWT_ACCESS_SECRET!,
+        },
+        (payload: any, done: VerifiedCallback) => {
+            done(null, payload);
+        }
+    )
+);
+
+passport.use(
+    'temp-jwt',
+    new JwtStrategy(
+        {
+            jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+            secretOrKey: process.env.JWT_TEMPORARY_SECRET!,
+        },
+        (payload: JwtPayload, done: VerifiedCallback) => {
+            done(null, payload);
+        }
+    )
+);
 
 export { passport };

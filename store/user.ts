@@ -26,6 +26,12 @@ export const usePhone = createStore<UserStore>((set, get) => ({
         return data;
     },
     code: async (code) => {
-        console.log(code);
+
+        const data = await fetchRequest(
+            "http://localhost:3001/api/user/activate",
+            "POST",
+            { code }
+        );
+        return data;
     }
 }), "User");

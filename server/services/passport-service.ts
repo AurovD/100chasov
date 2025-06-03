@@ -55,6 +55,7 @@ class PassportService {
     validateTemporaryToken(token: string) {
         try {
             const userData = jwt.verify(token, process.env.JWT_TEMPORARY_SECRET || '');
+            console.log(userData);
             return userData;
         } catch (e) {
             return null;
