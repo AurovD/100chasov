@@ -2,7 +2,8 @@ import express from 'express';
 import {User} from "../../types/user";
 import UserService from "../services/user-service";
 import PassportService from "../services/passport-service";
-import {JwtPayload} from "jsonwebtoken";
+import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcrypt';
 
 
 declare module 'express' {
@@ -13,46 +14,55 @@ declare module 'express' {
 
 class UserController {
     async activate (req: express.Request, res: express.Response): Promise<any> {
-        PassportService.validateTemporaryToken(
-            req.cookies.token,
-        );
+        const isValid = await PassportService.validateTemporaryToken(req.cookies.token);
+        console.log(isValid, "test");
+        // PassportService.validateTemporaryToken(
+        //     req.cookies,
+        // ); //передать токен или телефон ? захэшировать???
         return res.status(200).json({ success: true });
     }
-    async code (req: express.Request, res: express.Response): Promise<any> {
+
+    async requestCode(req: express.Request, res: express.Response): Promise<express.Response>{
         const phone: string = req.body.phone;
+
         if (!phone) {
             return res.status(400).json({ success: false, message: "Phone is required" });
         }
 
-
         try {
-            let oldUserRecord = await UserService.findCodes(phone);
-            if(oldUserRecord){
-                let token: string | JwtPayload | null =
-                  PassportService.validateTemporaryToken(
-                    oldUserRecord.temporary_token,
-                  );
-                if(token){
+            const existingSession = await UserService.findVerificationSession(phone);
+
+            if (existingSession) {
+                const isExpired = UserService.isExpired(existingSession.expiresAt);
+
+                if (isExpired) {
+                    await UserService.deleteVerificationSessions(phone);
+                } else {
+                    // Сессия активна, не создаём новую
                     return res.status(200).json({ success: true });
                 }
-
-                await UserService.deleteCode(phone);
             }
-            const smsCode:string = `${Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000}`;
-            let temp_token: string = PassportService.generateTemporaryToken(phone);
-            // await UserService.createCode(phone, smsCode, temp_token);
 
-            res
-              .status(200)
-              .cookie("token", temp_token, {
-                httpOnly: true,
-                secure: true,
-                sameSite: "lax",
-                maxAge: 1800000,
-              }).json({ success: true });
+            const smsCode = String(Math.floor(1000 + Math.random() * 9000)); // 4-значный код
+            const codeHash = await bcrypt.hash(smsCode, 10);
+
+            const verificationId = uuidv4();
+
+            await UserService.createVerificationSession({
+                verificationId,
+                phone,
+                codeHash
+            });
+
+            // Отправить SMS — временно логируем
+            console.log(`Код для ${phone}: ${smsCode} (id: ${verificationId})`);
+
+            return res.status(200).json({ success: true });
         } catch (err) {
-            return res.status(500).json();
+            console.error("Ошибка при запросе кода:", err);
+            return res.status(500).json({ success: false, message: "Internal server error" });
         }
     }
+
 }
 export default new UserController();

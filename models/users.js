@@ -2,7 +2,7 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    class User extends Model {
+    class Users extends Model {
         static associate(models) {
             // User.belongsToMany(models.Audition, {
             //   through: 'Users_Auditions',
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }
 
-    User.init({
+    Users.init({
         login: {
             type: DataTypes.STRING,
             unique: true,
@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         sequelize,
-        modelName: 'User',
+        modelName: 'Users',
         paranoid: true,
         timestamps: true,
         indexes: [
@@ -55,5 +55,5 @@ module.exports = (sequelize, DataTypes) => {
         ]
     });
 
-    return User;
+    return Users;
 };

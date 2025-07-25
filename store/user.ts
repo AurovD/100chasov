@@ -19,7 +19,7 @@ export const usePhone = createStore<UserStore>((set, get) => ({
         }
 
             const data = await fetchRequest(
-                "http://localhost:3001/api/user/code",
+                "http://localhost:3001/api/user/request_code",
                 "POST",
                 { phone }
             );

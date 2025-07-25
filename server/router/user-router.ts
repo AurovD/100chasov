@@ -4,7 +4,7 @@ import { passport } from "../core/passport";
 
 const router = express.Router();
 
-router.post("/code", userController.code);
+router.post("/request_code", userController.requestCode);
 router.post("/activate", passport.authenticate('temp-jwt', { session: false }), userController.activate);
 
 

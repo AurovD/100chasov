@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 
-import { Codes } from "../../models";
+import { Verifications } from "../../models";
 
 dotenv.config({
     path: 'server/.env'
@@ -9,24 +9,34 @@ dotenv.config({
 
 
 class UserService {
-    async findCodes(phone: string) {
-        const whereQuery = { phone };
-        return await Codes.findOne({
+    async findVerificationSession(phone: string) {
+        // const whereQuery = { phone };
+        return await Verifications.findOne({
             where: {
-                whereQuery
+                phone
             },
             raw: true
         });
     }
-    async createCode(phone: string, code: string, token: string) {
-        return await Codes.create({
-            code,
-            phone,
-            temporary_token: token
+    async createVerificationSession({ verificationId, phone, codeHash}: {
+        verificationId: string;
+        phone: string;
+        codeHash: string;
+    }) {
+        await Verifications.create({
+            id: verificationId, 
+            phone, 
+            codeHash, 
+            expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 минут });
         });
     }
-    async deleteCode(phone: string) {
-        return await Codes.destroy({
+    isExpired(expiresAt: Date ): boolean {
+        return new Date() > new Date(expiresAt);
+    }
+    
+
+    async deleteVerificationSessions(phone: string) {
+        return await Verifications.destroy({
             where: {
                 phone
             }

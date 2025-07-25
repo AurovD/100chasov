@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv  from 'dotenv';
+import UserService from "./user-service";
+import { log } from 'console';
 dotenv.config({
     path: 'routes/.env'
 });
@@ -52,13 +54,25 @@ class PassportService {
     // }
     // validateRefreshToken(token) {
     // }
-    validateTemporaryToken(token: string) {
+    async validateTemporaryToken(token: string) {
         try {
-            const userData = jwt.verify(token, process.env.JWT_TEMPORARY_SECRET || '');
-            console.log(userData);
-            return userData;
-        } catch (e) {
-            return null;
+            const result = jwt.verify(
+                token,
+                process.env.JWT_TEMPORARY_SECRET || ''
+            );
+            return !!result;
+        } catch (e: any) {
+            if (e.name === "TokenExpiredError") {
+                console.log("TokenExpiredError");
+                return false;
+            }
+            if (e.name === "JsonWebTokenError") {
+                console.log("Invalid token structure or secret");
+                return false;
+            }
+
+            console.error("Unexpected JWT error:", e);
+            return false;
         }
     }
     // async findToken(id) {
