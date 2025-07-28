@@ -22,7 +22,7 @@ const Phone: NextPage = () => {
     const changeContent = usePopupStore((state) => state.changeContent);
 
     const handleErrorEvent = () => {
-        changeContent('Сервис не отвечает', <ErrorPopup />);
+        changeContent('Сервис не отвечает', <ErrorPopup/>);
     };
 
     const handleCodeEvent = () => {

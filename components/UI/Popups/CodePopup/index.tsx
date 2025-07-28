@@ -19,7 +19,7 @@ const CodePopup: React.FC = () => {
 
 
     const mutation = useMutation({
-        mutationFn: codeRequest,
+      mutationFn: codeRequest,
     });
 
     useEffect(() => {

@@ -5,7 +5,7 @@ import { passport } from "../core/passport";
 const router = express.Router();
 
 router.post("/request_code", userController.requestCode);
-router.post("/activate", passport.authenticate('temp-jwt', { session: false }), userController.activate);
+router.post("/verify_code", userController.verifyCode);
 
 
 export default router;
