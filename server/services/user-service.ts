@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 
-import { Verifications } from "../../models";
+import { Users } from "../../models";
 
 dotenv.config({
     path: 'server/.env'
@@ -9,6 +9,18 @@ dotenv.config({
 
 
 class UserService {
+    async createUser(phone: string, ) {
+        return await Users.create({
+            phone
+        });
+    }
+    async deleteUser(phone: string, ) {
+        const whereQuery = { phone };
+        console.log(whereQuery)
+        await Users.destroy({
+                where: whereQuery
+        });
+    }
     // async findVerificationSession(phone: string) {
     //     // const whereQuery = { phone };
     //     return await Verifications.findOne({

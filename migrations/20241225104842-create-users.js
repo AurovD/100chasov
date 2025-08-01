@@ -4,9 +4,8 @@ module.exports = {
     await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       login: {
         type: Sequelize.STRING,
@@ -16,10 +15,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         unique: true,
-        allowNull: true,
-        validate: {
-          isEmail: true
-        }
+        allowNull: true
       },
       phone: {
         type: Sequelize.STRING,
@@ -33,13 +29,21 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
-      admin: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
+      role: {
+        type: Sequelize.ENUM('user', 'moderator', 'admin', 'superadmin'),
+        defaultValue: 'user'
+      },
+      permissions: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+        defaultValue: []
       },
       active_count: {
         type: Sequelize.INTEGER,
         defaultValue: 0
+      },
+      isBanned: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       createdAt: {
         allowNull: false,
@@ -57,7 +61,9 @@ module.exports = {
     await queryInterface.addIndex('Users', ['email'], { unique: true });
     await queryInterface.addIndex('Users', ['phone'], { unique: true });
   },
+
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Users');
+    await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Users_role";');
   }
 };

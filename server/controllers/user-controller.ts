@@ -12,11 +12,18 @@ declare module 'express' {
     }
 }
 
+
+const cookie: '_33b54ef1-4db5-431c-88ad-8a7ff7956c5f' = '_33b54ef1-4db5-431c-88ad-8a7ff7956c5f';
+
 class UserController {
+    async delete (req: express.Request, res: express.Response): Promise<any> {
+        await UserService.deleteUser(req.body.phone);
+        return res.status(200).json({ success: true });
+    }
     async verifyCode (req: express.Request, res: express.Response): Promise<any> {
 
         try {
-            const redisKey = `verify:${req.cookies['_33b54ef1-4db5-431c-88ad-8a7ff7956c5f']}`;
+            const redisKey = `verify:${req.cookies[cookie]}`;
             const redisData = await redis.get(redisKey);
 
             console.log(redisData, "code from redis");
@@ -36,7 +43,14 @@ class UserController {
             await redis.del(`verify:${phone}`);
 
 
-            console.log("everything is ok", isCodeValid);
+
+            let newUser = await UserService.createUser(phone);
+
+
+            console.log("everything is ok", isCodeValid, newUser);
+
+
+
 
             
             return res.status(200).json({ success: true });
@@ -56,11 +70,9 @@ class UserController {
         }
 
         try {
-            const redisKey = `verify:${phone}`;
-            const existingCode = await redis.get(redisKey);
+            const redisKey:string  = `verify:${phone}`;
+            const existingCode: string | null = await redis.get(redisKey);
 
-
-            console.log(existingCode, "reg")
             if (existingCode) {
                 res.status(200).json({ success: true });
                 return;
@@ -80,9 +92,9 @@ class UserController {
                 phone
             }), 'EX', 300);
 
-            console.log(`Код для ${phone}: ${smsCode} (id: ${verificationId})`);
+            console.log(`Код для ${phone}: ${smsCode}`);
 
-            res.status(200).cookie("_33b54ef1-4db5-431c-88ad-8a7ff7956c5f", verificationId, {
+            res.status(200).cookie(cookie, verificationId, {
                 httpOnly: true,
                 secure: true,
                 sameSite: "lax",
