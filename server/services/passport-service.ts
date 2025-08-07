@@ -7,34 +7,33 @@ dotenv.config({
 });
 
 class PassportService {
-    // generateTokens(id, role) {
-    //     const payload = {
-    //         id,
-    //         role,
-    //         date: Date.now()
-    //     }
-    //     const accessToken = jwt.sign(payload,
-    //         process.env.JWT_ACCESS_SECRET || '',
-    //         {
-    //             expiresIn: process.env.JWT_MIN_AGE,
-    //             algorithm: 'HS256',
-    //         }
-    //     );
-    //
-    //     const refreshToken = jwt.sign(payload,
-    //         process.env.JWT_REFRESH_SECRET || '',
-    //         {
-    //             expiresIn: process.env.JWT_MAX_AGE,
-    //             algorithm: 'HS256',
-    //         }
-    //     );
-    //
-    //     return {
-    //         accessToken,
-    //         refreshToken
-    //     }
-    //
-    // }
+    generateTokens(id: string, role: string) {
+        const payload = {
+            id,
+            role,
+            date: Date.now()
+        }
+        const access_token = jwt.sign(payload,
+            process.env.JWT_ACCESS_SECRET || '',
+            {
+                expiresIn: process.env.JWT_MIN_AGE,
+                algorithm: 'HS256',
+            }
+        );
+    
+        const refresh_token = jwt.sign(payload,
+            process.env.JWT_REFRESH_SECRET || '',
+            {
+                expiresIn: process.env.JWT_MAX_AGE,
+                algorithm: 'HS256',
+            }
+        );
+    
+        return {
+            access_token, refresh_token
+        }
+    
+    }
     generateTemporaryToken(phone: string): string {
         const payload = {
             phone,

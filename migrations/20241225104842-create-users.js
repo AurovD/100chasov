@@ -1,4 +1,6 @@
 /** @type {import('sequelize-cli').Migration} */
+import { USER_ROLES, USER_PERMISSIONS } from '../types/user'; 
+
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Users', {
@@ -30,7 +32,7 @@ module.exports = {
         defaultValue: 0
       },
       role: {
-        type: Sequelize.ENUM('user', 'moderator', 'admin', 'superadmin'),
+        type: Sequelize.ENUM(...USER_ROLES),
         defaultValue: 'user'
       },
       permissions: {

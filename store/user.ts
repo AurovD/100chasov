@@ -2,11 +2,15 @@
 import { fetchRequest } from '../helpers/fetch-request';
 import {createStore} from './createStore';
 import {User} from "../types/user";
+import { UserResponse } from '../types/user';
+
+
+// type UserResponse = {success: boolean, message?: string, access_token?: string, user?: User}
 
 export interface UserStore {
   user: User | {};
   phone: (phone: string, reload?: boolean) => Promise<unknown>;
-  code: (code: string) => Promise<unknown>;
+  code: (code: string) => Promise<UserResponse>;
 }
 
 export const usePhone = createStore<UserStore>(
@@ -27,13 +31,24 @@ export const usePhone = createStore<UserStore>(
         "POST",
         { phone },
       );
+
+
     },
     code: async (code) => {
-      return await fetchRequest(
+      let data: UserResponse = await fetchRequest(
         "http://localhost:3001/api/user/verify_code",
         "POST",
         { code },
       );
+
+      if (!data.success) {
+        return data;
+      }
+      set({
+        user: data.user,
+      });
+
+      return data;
     },
   }),
   "User",

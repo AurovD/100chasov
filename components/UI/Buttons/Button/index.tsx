@@ -1,14 +1,6 @@
 import clsx from "clsx";
 import styles from "./Button.module.scss";
-import {FC, MouseEventHandler} from "react";
-
-export interface ButtonProps {
-    children: React.ReactNode;
-    action?: React.MouseEventHandler<HTMLButtonElement>;
-    className?: string;
-    type?: "button" | "submit";
-    disabled?: boolean;
-}
+import {ButtonProps} from "../../../../types/ui";
 
 const Button: React.FC<ButtonProps> = ({
                                            className,
@@ -19,7 +11,8 @@ const Button: React.FC<ButtonProps> = ({
                                        }) => {
     const combinedClassName = clsx(
         styles.button,
-        className && styles[className]
+        className && styles[className],
+        disabled && styles.disabled
     );
 
     return (
@@ -27,7 +20,7 @@ const Button: React.FC<ButtonProps> = ({
             className={combinedClassName}
             onClick={action}
             type={type}
-            disabled={disabled} // <-- сюда
+            disabled={disabled} 
         >
             {children}
         </button>

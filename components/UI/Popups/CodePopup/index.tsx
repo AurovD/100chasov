@@ -9,17 +9,31 @@ import { useUserStore } from '../../../../store';
 import { useMutation } from '@tanstack/react-query';
 import LoadingPopup from "../LoadingPopup";
 import usePopupStore from "../../Popup/store";
+import { UserResponse } from 'types/user';
 
 const CodePopup: React.FC = () => {
     const codeRequest = useUserStore((state) => state.code);
     const changeContent = usePopupStore((state) => state.changeContent);
+     const closePopup = usePopupStore((state) => state.closePopup);
 
-    const [time, setTime] = useState<number>(15);
+    const [time, setTime] = useState<number>(5);
+    const [attempts, setAttempt] = useState<number>(5);
+    const[message, setMessage] = useState<string>('');
     const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
 
+
+
+    const handleCodeEvent = (data: UserResponse) => {
+        if (data.success) {
+            closePopup();
+        }
+        setMessage(data.message || '');
+    };
+
     const mutation = useMutation({
       mutationFn: codeRequest,
+      onSuccess: (data: UserResponse) => handleCodeEvent(data),
     });
 
     useEffect(() => {
@@ -36,11 +50,11 @@ const CodePopup: React.FC = () => {
     }, []);
 
 
-    useEffect(() => {
-        if (mutation.isPending) {
-            changeContent('Загрузка', <LoadingPopup />);
-        }
-    }, [mutation.isPending, changeContent]);
+    // useEffect(() => {
+    //     if (mutation.isPending) {
+    //         changeContent('Загрузка', <LoadingPopup />);
+    //     }
+    // }, [mutation.isPending, changeContent, message]);
 
     const form = useForm({
         defaultValues: {
@@ -121,18 +135,24 @@ const CodePopup: React.FC = () => {
                 {/*    Отправить*/}
                 {/*</Button>*/}
             </form>
-
             {time > 0 ? (
                 <Button className="btn btn-link" disabled={true}>
                         Отправить код еще раз через {time} секунд
                     </Button>
             ) : (
                 <div>
-                    <Button className="btn btn-link">
+                    <Button className="btn btn-link" action={() => {
+                            setTime(5);
+                            setAttempt(attempts - 1);
+                            if (attempts <= 0) {
+                                setMessage('Вы исчерпали количество попыток');
+                            }
+                        }} disabled={attempts <= 0}>
                         Отправить код еще раз
                     </Button>
                 </div>
             )}
+            {message && <p className={clsx(styles.message)}>{message}</p>}
         </div>
     );
 };

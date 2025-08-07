@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 
 import { Users } from "../../models";
 
+import redis from '../../config/redis';
+
 dotenv.config({
     path: 'server/.env'
 })
@@ -20,6 +22,21 @@ class UserService {
         await Users.destroy({
                 where: whereQuery
         });
+    }
+
+    async findUser(phone: string, ) {
+        const whereQuery = { phone };
+        console.log(whereQuery)
+        return await Users.findOne({
+                where: whereQuery
+        });
+    }
+
+    async setRedis(id: string, data: { [key: string]: any }, time: number) {
+            return await redis.set(`verify:${id}`, JSON.stringify(data), 'EX', time);
+    }
+    async getRedis(id: string) {
+        return await redis.get(`verify:${id}`)
     }
     // async findVerificationSession(phone: string) {
     //     // const whereQuery = { phone };

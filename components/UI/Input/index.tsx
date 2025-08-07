@@ -2,13 +2,7 @@ import {useField} from "formik";
 import {FC, useMemo, useState} from "react";
 import styles from './TextInput.module.scss';
 import clsx from "clsx";
-
-interface Interface {
-    label: string;
-    name: string;
-    type: string;
-    placeholder: string;
-}
+import {InputProps} from "../../../types/ui";
 
 // const toggleOnFocus = (initialState = false) => {
 //     const [show, toggle] = useState(initialState);
@@ -21,7 +15,7 @@ interface Interface {
 //     return [show, eventHandlers];
 // }
 
-export const MyTextInput: FC<Interface> = ({ label, ...props }) => {
+export const MyTextInput: FC<InputProps> = ({ label, ...props }) => {
     const [field, meta, helpers] = useField(props);
     // const [show, eventHandlers] = toggleOnFocus();
 

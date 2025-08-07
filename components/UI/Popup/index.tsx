@@ -4,10 +4,6 @@ import styles from "./Popup.module.scss";
 import clsx from "clsx";
 import usePopupStore from "./store";
 
-//
-// interface Interface {
-//     children: React.ReactNode;
-// }
 
 export const Popup = () => {
     const [bodyElement, setBodyElement] = useState<HTMLElement | null>(null);

@@ -1,18 +1,18 @@
 'use strict';
 const { Model } = require('sequelize');
 const FlakeId = require('flake-idgen');
+import { USER_ROLES, USER_PERMISSIONS } from '../types/user'; 
 
 
-const flake = new FlakeId();
+const flake = new FlakeId({ id: 1 });
 
 module.exports = (sequelize, DataTypes) => {
     class Users extends Model {
         static associate(models) {
-            // User.belongsToMany(models.Audition, {
-            //   through: 'Users_Auditions',
-            //   as: "Audition",
-            //   foreignKey: "UserId"
-            // });
+            Users.hasOne(models.UserRefreshTokens, {
+                foreignKey: 'userId',
+                as: 'refreshTokens'
+            });
         }
     }
 
@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: 0
         },
         role: {
-            type: DataTypes.ENUM('user', 'moderator', 'admin', 'superadmin'),
+            type: DataTypes.ENUM(...USER_ROLES),
             defaultValue: 'user'
         },
         permissions: {
@@ -96,3 +96,5 @@ module.exports = (sequelize, DataTypes) => {
 
     return Users;
 };
+
+// https://sequelize.org/docs/v6/other-topics/migrations/
