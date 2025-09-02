@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './Forms.module.scss';
 import clsx from 'clsx';
 import 'react-phone-number-input/style.css';
@@ -16,6 +16,7 @@ import LoadingPopup from '../LoadingPopup';
 import { useForm } from '@tanstack/react-form';
 import * as Yup from 'yup';
 import {E164Number} from "libphonenumber-js";
+import {UserResponse} from "../../../../types/user";
 
 const Phone: NextPage = () => {
     const phoneRequest = useUserStore((state) => state.phone);
@@ -25,13 +26,18 @@ const Phone: NextPage = () => {
         changeContent('Сервис не отвечает', <ErrorPopup/>);
     };
 
-    const handleCodeEvent = () => {
-        changeContent('Подтверждение', <CodePopup />);
+    const [message, setMessage] = useState<string>('');
+
+    const handleCodeEvent = (data: UserResponse) => {
+        if(data.success) {
+            changeContent('Подтверждение', <CodePopup />);
+        }
+        setMessage(data.message ?? '');
     };
 
     const mutation = useMutation({
         mutationFn: phoneRequest,
-        onSuccess: () => handleCodeEvent(),
+        onSuccess: (data: UserResponse) => handleCodeEvent(data),
         onError: () => handleErrorEvent(),
     });
 
@@ -39,7 +45,7 @@ const Phone: NextPage = () => {
         if (mutation.isPending) {
             changeContent('Загрузка', <LoadingPopup />);
         }
-    }, [mutation.isPending, changeContent]);
+    }, [mutation.isPending]);
 
     const form = useForm({
         defaultValues: {
@@ -83,8 +89,8 @@ const Phone: NextPage = () => {
                             onChange={(val) => field.handleChange(val ?? '')}
                             className={clsx(styles.input)}
                         />
-                        {field.state.meta.errors?.[0] && (
-                            <div className={clsx(styles.error)}>{field.state.meta.errors[0]}</div>
+                        {field.state.meta.errors?.[0] || message && (
+                            <div className={clsx(styles.error)}>{field.state.meta.errors[0] || message}</div>
                         )}
                     </label>
                 )}

@@ -25,27 +25,48 @@ class UserController {
     async verifyCode (req: express.Request, res: express.Response): Promise<any> {
 
         try {
-            const redisKey = `verify:${req.cookies[cookie[0]]}`;
-            const redisData = await redis.get(redisKey);
+            const redisKey = req.cookies[cookie[0]];
+            const redisData: string | null = await UserService.getRedis(redisKey);
+
 
             if (!redisData) {
-                return res.status(400).json({ success: false, message: "Code not found" });
+                return res.status(400).json({ success: false, message: "Код не найден" });
             }
 
             const { codeHash, phone, attemptsRespondCode, attemptsRequestCode } = JSON.parse(redisData);
 
             const isCodeValid = await bcrypt.compare(req.body.code ?? '', codeHash);
             if (!isCodeValid) {
-                await redis.set(redisKey, JSON.stringify({
+
+                if(attemptsRespondCode === 0) {
+                    // await redis.del(`verify:${redisKey}`);
+                    // await redis.del(`verify:${phone}`);
+
+                    const isBanned = await UserService.getRedis(`ban:${phone}`);
+
+                    if (isBanned) {
+                        res.status(400).json({ success: false, message: "Превышано количество попыток" });
+                        return;
+                    }
+
+                    await UserService.setRedis(`ban:${phone}`, {
+                        phone
+                    }, 300);
+
+                    return res.status(400).json({ success: false, message: "Превышано количество попыток" });
+                }
+
+                await UserService.setRedis(redisKey, {
                     codeHash,
                     phone,
                     attemptsRequestCode,
                     attemptsRespondCode: attemptsRespondCode - 1,
-                }), 'EX', 300);
-                return res.status(400).json({ success: false, message: "Неврный код" });
+                }, 300);
+
+                return res.status(400).json({ success: false, message: "Неверный код" });
             }
 
-            await redis.del(redisKey);
+            await redis.del(`verify:${redisKey}`);
             await redis.del(`verify:${phone}`);
 
 
@@ -81,14 +102,23 @@ class UserController {
     async requestCode(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         const phone: string = req.body.phone;
 
-
         if (!phone) {
             res.status(400).json({ success: false, message: "Phone is required" });
             return;
         }
 
+        const isBanned = await UserService.getRedis(`ban:${phone}`);
+
+        console.log(isBanned);
+
+        if (isBanned) {
+            res.status(400).json({ success: false, message: "Превышано количество попыток" });
+            return;
+        }
+
         try {
             const existingCode: string | null = await UserService.getRedis(phone);
+
 
             if (existingCode) {
                 res.status(200).json({ success: true });
@@ -100,18 +130,17 @@ class UserController {
             const codeHash = await bcrypt.hash(smsCode, 10);
             const verificationId = uuidv4();
 
-            await redis.set(redisKey, JSON.stringify({
+
+            await UserService.setRedis(phone, {
                 verificationId,
-            }), 'EX', 300);
+            }, 300);
 
-
-
-            await redis.set(`verify:${verificationId}`, JSON.stringify({
+            await UserService.setRedis(verificationId, {
                 codeHash,
                 phone,
-                attemptsRequestCode: 5,
-                attemptsRespondCode: 5,
-            }), 'EX', 300);
+                attemptsRequestCode: 2,
+                attemptsRespondCode: 2,
+            }, 300);
 
             console.log(`Код для ${phone}: ${smsCode}`);
 

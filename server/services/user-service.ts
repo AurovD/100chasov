@@ -33,10 +33,10 @@ class UserService {
     }
 
     async setRedis(id: string, data: { [key: string]: any }, time: number) {
-            return await redis.set(`verify:${id}`, JSON.stringify(data), 'EX', time);
+            return redis.set(`verify:${id}`, JSON.stringify(data), 'EX', time);
     }
     async getRedis(id: string) {
-        return await redis.get(`verify:${id}`)
+        return redis.get(`verify:${id}`);
     }
     // async findVerificationSession(phone: string) {
     //     // const whereQuery = { phone };

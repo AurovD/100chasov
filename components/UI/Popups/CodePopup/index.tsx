@@ -13,7 +13,7 @@ import { UserResponse } from 'types/user';
 
 const CodePopup: React.FC = () => {
     const codeRequest = useUserStore((state) => state.code);
-    const changeContent = usePopupStore((state) => state.changeContent);
+    // const changeContent = usePopupStore((state) => state.changeContent);
      const closePopup = usePopupStore((state) => state.closePopup);
 
     const [time, setTime] = useState<number>(5);

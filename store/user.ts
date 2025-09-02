@@ -9,7 +9,7 @@ import { UserResponse } from '../types/user';
 
 export interface UserStore {
   user: User | {};
-  phone: (phone: string, reload?: boolean) => Promise<unknown>;
+  phone: (phone: string, reload?: boolean) => Promise<UserResponse>;
   code: (code: string) => Promise<UserResponse>;
 }
 

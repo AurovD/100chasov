@@ -9,8 +9,10 @@ const redis = new Redis({
     host: process.env.DB_HOST,
     password: process.env.DB_PASSWORD,
     port: 6379,
-    // connectTimeout: 3000,
-    // family: 4,
+    reconnectOnError: () => true,
+    retryStrategy(times) {
+        return Math.min(times * 50, 2000);
+    }
 });
 
 // Проверка подключения
