@@ -44,8 +44,10 @@ export const usePhone = createStore<UserStore>(
       if (!data.success) {
         return data;
       }
+        
       set({
-        user: data.user,
+        user: {
+        ...data.user, access_token: data.access_token}
       });
 
       return data;

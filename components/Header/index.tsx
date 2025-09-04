@@ -3,14 +3,29 @@ import clsx from "clsx";
 import styles from "./Header.module.scss";
 import Link from 'next/link';
 import Button from "../UI/Buttons/Button";
-import React from "react";
+import React, { useEffect } from "react";
 import usePopupStore from "../UI/Popup/store";
 import Phone from "../UI/Popups/Phone";
+import { useUserStore } from 'store';
 
 const Header: NextPage = () => {
 
     const openPopup = usePopupStore((state) => state.openPopup);
     const changeContent = usePopupStore((state) => state.changeContent);
+
+
+    const [user, setUser] = React.useState({});
+
+    const userState = useUserStore((state) => state.user);
+
+
+    useEffect(() => {
+        console.log(userState);
+        setUser(userState);
+        
+    }, [userState]);
+
+    
 
     const phone = <Phone/>
 

@@ -9,8 +9,10 @@ export interface User {
     isBanned: boolean,
     count: number,
     email: string,
-    avatarUrl: string
-
+    avatarUrl: string,
+    acciess_token?: string,
+    createdAt: Date,
+    updatedAt: Date
 }
 
 

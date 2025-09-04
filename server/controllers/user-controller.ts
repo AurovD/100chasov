@@ -113,9 +113,6 @@ class UserController {
             }
 
 
-            console.log("everything is ok", isCodeValid, user);
-
-
 
 
             let {access_token, refresh_token} = PassportService.generateTokens(String(user.id), "user");
@@ -127,7 +124,7 @@ class UserController {
             }).json({ 
                 success: true,
                 access_token,
-                user: user
+                user
             });
             
         } catch (err) {

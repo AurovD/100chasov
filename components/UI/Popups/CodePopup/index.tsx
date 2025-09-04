@@ -7,10 +7,10 @@ import Button from '../../Buttons/Button';
 import styles from './CodePopup.module.scss';
 import { useUserStore } from '../../../../store';
 import { useMutation } from '@tanstack/react-query';
-import LoadingPopup from "../LoadingPopup";
 import usePopupStore from "../../Popup/store";
 import { UserResponse } from 'types/user';
 import {fetchRequest} from "../../../../helpers/fetch-request";
+import LoginPopup from '../LoginPopup';
 
 const CodePopup: React.FC = () => {
     const codeRequest = useUserStore((state) => state.code);
@@ -22,12 +22,20 @@ const CodePopup: React.FC = () => {
     const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
 
+    const changeContent = usePopupStore((state) => state.changeContent);
+
+
 
 
     const handleCodeEvent = (data: UserResponse) => {
-        if (data.success) {
-            closePopup();
+        console.log(data);
+        
+        if (data.success && data.user.updatedAt === data.user.createdAt) {
+            changeContent("Имя нового пользователя", <LoginPopup />);
+        } else if (data.success){
+             closePopup();
         }
+        
         setMessage(data.message || '');
     };
 

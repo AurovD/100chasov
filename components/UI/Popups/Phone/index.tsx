@@ -11,7 +11,6 @@ import { useMutation } from '@tanstack/react-query';
 import usePopupStore from '../../Popup/store';
 import ErrorPopup from '../ErrorPopup';
 import CodePopup from '../CodePopup';
-import LoadingPopup from '../LoadingPopup';
 
 import { useForm } from '@tanstack/react-form';
 import * as Yup from 'yup';
@@ -40,12 +39,6 @@ const Phone: NextPage = () => {
     onSuccess: (data: UserResponse) => handleCodeEvent(data),
     onError: () => handleErrorEvent(),
   });
-
-  useEffect(() => {
-    if (mutation.isPending) {
-      changeContent("Загрузка", <LoadingPopup />);
-    }
-  }, []);
 
   const form = useForm({
     defaultValues: {
