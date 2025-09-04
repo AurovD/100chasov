@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.post("/request_code", userController.requestCode);
 router.post("/verify_code", userController.verifyCode);
-router.post("/delete", userController.delete);
+router.post("/delete_user", userController.delete);
+router.get("/resend_code", userController.resendCode);
 
 
 export default router;

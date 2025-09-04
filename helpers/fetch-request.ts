@@ -16,7 +16,7 @@ export async function fetchRequest<T>(
     };
 
     // try {
-    const response = await window.fetch(url, options);
+    const response = await window.fetch("http://localhost:3001/api" + url, options);
 
     const data = await response.json();
 

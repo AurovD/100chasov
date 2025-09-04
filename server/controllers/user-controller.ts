@@ -18,6 +18,43 @@ declare module 'express' {
 const cookie: string[] = ['_33b54ef1-4db5-431c-88ad-8a7ff7956c5f', "_979481d1-b1de-4242-9da0-b5cbd247c54a"];
 
 class UserController {
+    async resendCode (req: express.Request, res: express.Response): Promise<any> {
+        const redisKey = req.cookies[cookie[0]];
+        const redisData: string | null = await UserService.getRedis(redisKey);
+
+        if (!redisKey || !redisData) {
+            return res.status(400).json({ success: false, message: "Пользователь не найден" });
+        }
+
+        const { codeHash, phone, attemptsRespondCode, attemptsRequestCode } = JSON.parse(redisData);
+
+        const newSmsCode = "7777"
+        const newCodeHash = await bcrypt.hash(newSmsCode, 10);
+
+        let updatedAttemptsRequestCode = attemptsRequestCode + 1;
+
+        console.log(updatedAttemptsRequestCode);
+
+        if(updatedAttemptsRequestCode >= 5){
+            return res.status(400).json({ success: false, attempts: updatedAttemptsRequestCode, message: "Вы исчерпали количество попыток" });
+        }
+
+
+        await UserService.setRedis(phone, {
+            verificationId: redisKey,
+        }, 300);
+
+        await UserService.setRedis(redisKey, {
+            codeHash: newCodeHash,
+            phone,
+            attemptsRequestCode: updatedAttemptsRequestCode,
+            attemptsRespondCode: attemptsRequestCode,
+        }, 300);
+
+        console.log(`Код для ${phone}: ${newSmsCode}`);
+
+        return res.status(200).json({ success: true, attempts: updatedAttemptsRequestCode });
+    }
     async delete (req: express.Request, res: express.Response): Promise<any> {
         await UserService.deleteUser(req.body.phone);
         return res.status(200).json({ success: true });
@@ -53,7 +90,7 @@ class UserController {
                         phone
                     }, 300);
 
-                    return res.status(400).json({ success: false, message: "Превышано количество попыток" });
+                    return res.status(400).json({ success: false, message: "Вы сделали максимальное количество попыток, попробуйте войти позднее" });
                 }
 
                 await UserService.setRedis(redisKey, {
@@ -138,8 +175,8 @@ class UserController {
             await UserService.setRedis(verificationId, {
                 codeHash,
                 phone,
-                attemptsRequestCode: 2,
-                attemptsRespondCode: 2,
+                attemptsRequestCode: 0,
+                attemptsRespondCode: 5,
             }, 300);
 
             console.log(`Код для ${phone}: ${smsCode}`);

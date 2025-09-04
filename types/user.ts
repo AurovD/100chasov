@@ -17,7 +17,8 @@ export interface User {
 export interface UserResponse  {
   success: boolean, 
   message?: string, 
-  access_token?: string
+  access_token?: string,
+    attempts?: number,
   user: User
 }
 

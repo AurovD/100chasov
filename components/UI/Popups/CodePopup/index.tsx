@@ -10,14 +10,14 @@ import { useMutation } from '@tanstack/react-query';
 import LoadingPopup from "../LoadingPopup";
 import usePopupStore from "../../Popup/store";
 import { UserResponse } from 'types/user';
+import {fetchRequest} from "../../../../helpers/fetch-request";
 
 const CodePopup: React.FC = () => {
     const codeRequest = useUserStore((state) => state.code);
     // const changeContent = usePopupStore((state) => state.changeContent);
      const closePopup = usePopupStore((state) => state.closePopup);
-
+    const [attempts, setAttempt] = useState<number>(0);
     const [time, setTime] = useState<number>(5);
-    const [attempts, setAttempt] = useState<number>(5);
     const[message, setMessage] = useState<string>('');
     const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
@@ -34,6 +34,22 @@ const CodePopup: React.FC = () => {
     const mutation = useMutation({
       mutationFn: codeRequest,
       onSuccess: (data: UserResponse) => handleCodeEvent(data),
+    });
+
+    const resendCodeMutation = useMutation({
+        mutationFn: async () => {
+            return fetchRequest<UserResponse>('/user/resend_code', 'GET');
+        },
+        onSuccess: (data) => {
+            if (data.success) {
+                setTime(5); // сброс таймера
+            } else {
+                setMessage(data.message || 'Ошибка при повторной отправке');
+            }
+        },
+        onError: () => {
+            setMessage('Ошибка подключения к серверу');
+        }
     });
 
     useEffect(() => {
@@ -136,23 +152,26 @@ const CodePopup: React.FC = () => {
                 {/*</Button>*/}
             </form>
             {time > 0 ? (
-                <Button className="btn btn-link" disabled={true}>
+                <Button className="btn btn-link"
+                        disabled={true}
+                >
                         Отправить код еще раз через {time} секунд
                     </Button>
             ) : (
                 <div>
-                    <Button className="btn btn-link" action={() => {
-                            setTime(5);
-                            setAttempt(attempts - 1);
-                            if (attempts <= 0) {
-                                setMessage('Вы исчерпали количество попыток');
-                            }
-                        }} disabled={attempts <= 0}>
-                        Отправить код еще раз
+                    <Button
+                        className="btn btn-link"
+                        disabled={resendCodeMutation.isPending}
+                        action={() => {
+                                resendCodeMutation.mutate();
+                        }} 
+                    >
+                        {resendCodeMutation.isPending ? 'Отправка...' : 'Отправить код еще раз'}
                     </Button>
                 </div>
             )}
             {message && <p className={clsx(styles.message)}>{message}</p>}
+            {mutation.isPending && <p className={clsx(styles.message)}>Отправка...</p>}
         </div>
     );
 };

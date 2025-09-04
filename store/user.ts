@@ -27,7 +27,7 @@ export const usePhone = createStore<UserStore>(
       }
 
       return await fetchRequest(
-        "http://localhost:3001/api/user/request_code",
+        "/user/request_code",
         "POST",
         { phone },
       );
@@ -36,7 +36,7 @@ export const usePhone = createStore<UserStore>(
     },
     code: async (code) => {
       let data: UserResponse = await fetchRequest(
-        "http://localhost:3001/api/user/verify_code",
+        "/user/verify_code",
         "POST",
         { code },
       );

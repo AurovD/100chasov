@@ -19,87 +19,91 @@ import {E164Number} from "libphonenumber-js";
 import {UserResponse} from "../../../../types/user";
 
 const Phone: NextPage = () => {
-    const phoneRequest = useUserStore((state) => state.phone);
-    const changeContent = usePopupStore((state) => state.changeContent);
+  const phoneRequest = useUserStore((state) => state.phone);
+  const changeContent = usePopupStore((state) => state.changeContent);
 
-    const handleErrorEvent = () => {
-        changeContent('Сервис не отвечает', <ErrorPopup/>);
-    };
+  const handleErrorEvent = () => {
+    changeContent("Сервис не отвечает", <ErrorPopup />);
+  };
 
-    const [message, setMessage] = useState<string>('');
+  const [message, setMessage] = useState<string>("");
 
-    const handleCodeEvent = (data: UserResponse) => {
-        if(data.success) {
-            changeContent('Подтверждение', <CodePopup />);
-        }
-        setMessage(data.message ?? '');
-    };
+  const handleCodeEvent = (data: UserResponse) => {
+    if (data.success) {
+      changeContent("Подтверждение", <CodePopup />);
+    }
+    setMessage(data.message ?? "");
+  };
 
-    const mutation = useMutation({
-        mutationFn: phoneRequest,
-        onSuccess: (data: UserResponse) => handleCodeEvent(data),
-        onError: () => handleErrorEvent(),
-    });
+  const mutation = useMutation({
+    mutationFn: phoneRequest,
+    onSuccess: (data: UserResponse) => handleCodeEvent(data),
+    onError: () => handleErrorEvent(),
+  });
 
-    useEffect(() => {
-        if (mutation.isPending) {
-            changeContent('Загрузка', <LoadingPopup />);
-        }
-    }, [mutation.isPending]);
+  useEffect(() => {
+    if (mutation.isPending) {
+      changeContent("Загрузка", <LoadingPopup />);
+    }
+  }, []);
 
-    const form = useForm({
-        defaultValues: {
-            phone: '',
-        },
-        onSubmit: async ({ value }) => {
-            mutation.mutate(value.phone);
-        },
-    });
+  const form = useForm({
+    defaultValues: {
+      phone: "",
+    },
+    onSubmit: async ({ value }) => {
+      mutation.mutate(value.phone);
+    },
+  });
 
-    return (
-        <form
-            className={clsx(styles.form)}
-            onSubmit={(e) => {
-                e.preventDefault();
-                form.handleSubmit();
-            }}
-        >
-            <form.Field
-                name="phone"
-                validators={{
-                    onChange: (value) => {
-                        try {
+  return (
+    <form
+      className={clsx(styles.form)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit();
+      }}
+    >
+      <form.Field
+        name="phone"
+        validators={{
+          onChange: (value) => {
+            try {
+              Yup.string()
+                .required("Обязательное поле")
+                .min(12, "Неверный формат")
+                .max(12, "Неверный формат")
+                .validateSync(value.value);
+            } catch (error: any) {
+              return error.message;
+            }
+          },
+        }}
+      >
+        {(field) => (
+          <label htmlFor="phone" title="Ваш телефон">
+            <PhoneNumberInput
+              name="phone"
+              value={field.state.value as E164Number | undefined}
+              onChange={(val) => field.handleChange(val ?? "")}
+              className={clsx(styles.input)}
+            />
+            <div className={clsx(styles.error)}>
+              {[...(field.state.meta.errors ?? []), message]
+                .filter(Boolean)
+                .map((err, i) => (
+                  <div key={i}>{err}</div>
+                ))}
+            </div>
+          </label>
+        )}
+      </form.Field>
 
-                            Yup.string()
-                                .required('Обязательное поле')
-                                .min(12, 'Неверный формат')
-                                .max(12, 'Неверный формат')
-                                .validateSync(value.value);
-                        } catch (error: any) {
-                            return error.message;
-                        }
-                    },
-                }}
-            >
-                {(field) => (
-                    <label htmlFor="phone" title="Ваш телефон">
-                        <PhoneNumberInput
-                            name="phone"
-                            value={field.state.value as E164Number | undefined}
-                            onChange={(val) => field.handleChange(val ?? '')}
-                            className={clsx(styles.input)}
-                        />
-                        {field.state.meta.errors?.[0] || message && (
-                            <div className={clsx(styles.error)}>{field.state.meta.errors[0] || message}</div>
-                        )}
-                    </label>
-                )}
-            </form.Field>
-
-
-            <Button type="submit" disabled={mutation.isPending}>Войти</Button>
-        </form>
-    );
+      <Button type="submit" disabled={mutation.isPending}>
+        {mutation.isPending ? 'Отправка...' : 'Отправить'}
+      </Button>
+    </form>
+  );
 };
 
 export default Phone;

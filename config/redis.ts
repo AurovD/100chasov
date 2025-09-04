@@ -11,9 +11,17 @@ const redis = new Redis({
     port: 6379,
     reconnectOnError: () => true,
     retryStrategy(times) {
-        return Math.min(times * 50, 2000);
+        return Math.min(times * 50, 20000);
     }
 });
+
+setInterval(() => {
+    if (redis.status === 'ready') {
+        redis.ping().then(() => console.log('PING OK')).catch(console.error);
+    } else {
+        console.log('Redis not ready, skipping PING');
+    }
+}, 15000);
 
 // Проверка подключения
 redis.on('connect', () => {
