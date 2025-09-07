@@ -1,6 +1,6 @@
 .button {
-  color: var(---clr-neutral-100);
-  background-color: var(---clr-primary-400);
+  color: var(--clr-neutral-100);
+  background-color: var(--clr-primary-400);
   outline: none;
   border: none;
   border-radius: .8vmax;
@@ -10,20 +10,16 @@
   margin-top: var(--size-500);
   margin-inline: auto;
 }
-  //.disabled {
-  //  pointer-events: none;
-  //  background-color: var(---clr-neutral-100);
-  //  color: var(---clr-neutral-800);
-  //  border: 2px solid var(---clr-primary-400);
-  //}
+
 .banner_button {
-  color: var(---clr-primary-400);
-  background-color: var(---clr-neutral-100);
-  border: 2px solid var(---clr-primary-400);
+  color: var(--clr-primary-400);
+  background-color: var(--clr-neutral-100);
+  border: 2px solid var(--clr-primary-400);
+
   &:hover {
-    border: 2px solid var(---clr-neutral-100);
-    background-color: var(---clr-primary-400);
-    color: var(---clr-neutral-100);
+    border: 2px solid var(--clr-neutral-100);
+    background-color: var(--clr-primary-400);
+    color: var(--clr-neutral-100);
   }
 }
 

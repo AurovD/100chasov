@@ -1,9 +1,8 @@
 import type { NextPage } from 'next';
 import React, {useEffect, useState} from 'react';
-import styles from './Forms.module.scss';
+import styles from './Phone.module.scss';
 import clsx from 'clsx';
 import 'react-phone-number-input/style.css';
-
 import PhoneNumberInput from '../PhoneNumberInput';
 import Button from '../../Buttons/Button';
 import { useUserStore } from '../../../../store';

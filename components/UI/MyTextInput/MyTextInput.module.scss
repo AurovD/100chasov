@@ -1,0 +1,49 @@
+//
+//.label {
+//  position: relative;
+//  display: flex;
+//  flex-direction: column;
+//  margin-top: var(--size-500);
+//
+//  //input {
+//  //  outline: none;
+//  //  width: 100%;
+//  //  border: none;
+//  //  font: 400 30px/2 var(--ff-primary);
+//  //}
+//  .input {
+//    border: 1px solid var(--clr-neutral-200);
+//    border-radius: 4px;
+//    padding: 0 20px;
+//    color: var(--clr-neutral-800);
+//  }
+//
+//  input {
+//    outline: none;
+//    width: 100%;
+//    border: none;
+//    font: 400 30px/2 var(--ff-primary);
+//  }
+//
+//  &:before {
+//    z-index: 10;
+//    position: absolute;
+//    left: 21px;
+//    top: -10px;
+//    content: attr(title);
+//    display: block;
+//    padding: 0 8px;
+//    color: var(--clr-neutral-800);
+//    font-size: 14px;
+//    background: var(--clr-neutral-100);
+//    box-sizing: border-box;
+//  }
+//
+//  .error {
+//    position: absolute;
+//    top: 0;
+//    right: 5px;
+//    color: var(--clr-primary-400);
+//    font-size: 14px;
+//  }
+//}
