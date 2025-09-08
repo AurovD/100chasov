@@ -5,12 +5,11 @@ import PassportService from "../services/passport-service";
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import redis from '../../config/redis';
-// import {ref} from "yup";
 
 
-declare module 'express' {
+declare module "express-serve-static-core" {
     interface Request {
-        body: Pick<User, 'phone' | 'code'>
+        user: Pick<User, "id" | "role" | "login">;
     }
 }
 
@@ -58,6 +57,29 @@ class UserController {
     async delete (req: express.Request, res: express.Response): Promise<any> {
         await UserService.deleteUser(req.body.phone);
         return res.status(200).json({ success: true });
+    }
+    async login(req: express.Request, res: express.Response): Promise<void> {
+        try {
+            const { login } = req.body;
+            const userId = req.user?.id;
+
+            if (!userId || !login) {
+                res.status(400).json({ success: false, message: "Некорректные данные" });
+                return;
+            }
+
+            const updatedCount = await UserService.changeLogin(userId, login);
+
+            if (updatedCount === 0) {
+                res.status(404).json({ success: false, message: "Пользователь не найден или логин не изменён" });
+                return;
+            }
+
+            res.status(200).json({ success: true });
+        } catch (err) {
+            console.error("Ошибка при смене логина:", err);
+            res.status(500).json({ success: false, message: "Серверная ошибка" });
+        }
     }
     async verifyCode (req: express.Request, res: express.Response): Promise<any> {
 

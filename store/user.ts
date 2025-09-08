@@ -9,6 +9,7 @@ import { UserResponse } from '../types/user';
 
 export interface UserStore {
   user: User | {};
+  token: string;
   phone: (phone: string, reload?: boolean) => Promise<UserResponse>;
   code: (code: string) => Promise<UserResponse>;
 }
@@ -16,6 +17,7 @@ export interface UserStore {
 export const usePhone = createStore<UserStore>(
   (set, get) => ({
     user: {},
+      token: "",
     phone: async (
       phone: string,
       reload?: boolean,
@@ -47,8 +49,12 @@ export const usePhone = createStore<UserStore>(
         
       set({
         user: {
-        ...data.user, access_token: data.access_token}
+        ...data.user}
       });
+
+      set({
+          token: data.access_token
+      })
 
       return data;
     },

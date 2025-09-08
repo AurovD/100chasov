@@ -17,11 +17,11 @@ export interface User {
 
 
 export interface UserResponse  {
-  success: boolean, 
-  message?: string, 
-  access_token?: string,
+    success: boolean,
+    message?: string,
+    access_token?: string,
     attempts?: number,
-  user: User
+    user: User
 }
 
 export type UserStatus = 'offline' | 'online';

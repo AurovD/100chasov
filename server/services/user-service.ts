@@ -16,6 +16,17 @@ class UserService {
             phone
         });
     }
+    async changeLogin(id: string, login: string) {
+        let [updatedCount] = await Users.update(
+            { login },
+            {
+                where: {
+                    id,
+                },
+            },
+        );
+        return updatedCount;
+    }
     async deleteUser(phone: string, ) {
         const whereQuery = { phone };
         console.log(whereQuery)
@@ -38,39 +49,6 @@ class UserService {
     async getRedis(id: string) {
         return redis.get(`verify:${id}`);
     }
-    // async findVerificationSession(phone: string) {
-    //     // const whereQuery = { phone };
-    //     return await Verifications.findOne({
-    //         where: {
-    //             phone
-    //         },
-    //         raw: true
-    //     });
-    // }
-    // async createVerificationSession({ verificationId, phone, codeHash}: {
-    //     verificationId: string;
-    //     phone: string;
-    //     codeHash: string;
-    // }) {
-    //     await Verifications.create({
-    //         id: verificationId,
-    //         phone,
-    //         codeHash,
-    //         expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 минут });
-    //     });
-    // }
-    // isExpired(expiresAt: Date ): boolean {
-    //     return new Date() > new Date(expiresAt);
-    // }
-    //
-    //
-    // async deleteVerificationSessions(phone: string) {
-    //     return await Verifications.destroy({
-    //         where: {
-    //             phone
-    //         }
-    //     })
-    // }
 }
 
 
