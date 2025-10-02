@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { Users } from "../../models";
 
 import redis from '../../config/redis';
+import {Op} from "sequelize";
 
 dotenv.config({
     path: 'server/.env'
@@ -35,11 +36,14 @@ class UserService {
         });
     }
 
-    async findUser(phone: string, ) {
-        const whereQuery = { phone };
-        console.log(whereQuery)
+    async findUser(phone?: string, id?: string) {
         return await Users.findOne({
-                where: whereQuery
+            where: {
+                [Op.or]: [
+                    phone ? { phone } : {},
+                    id ? { id } : {},
+                ],
+            },
         });
     }
 

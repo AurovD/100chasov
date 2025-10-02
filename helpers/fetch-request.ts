@@ -11,7 +11,7 @@ export async function fetchRequest<T>(
         headers: {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Authorization": token ? `Bearer ${token}` : "",
+            "Authorization": token ? `Bearer ${token}` : '',
         },
         credentials: "include",
         body: JSON.stringify(body),

@@ -79,7 +79,7 @@ const LoginPopup: React.FC = () => {
                 )}
             </form.Field>
 
-            <Button type="submit">Отправить</Button>
+            <Button className={"mt-5"} type="submit">Отправить</Button>
         </form>
 
     );

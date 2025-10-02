@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import usePopupStore from "../UI/Popup/store";
 import Phone from "../UI/Popups/Phone";
 import { useUserStore } from 'store';
+import {User} from "../../types/user";
 
 const Header: NextPage = () => {
 
@@ -14,16 +15,9 @@ const Header: NextPage = () => {
     const changeContent = usePopupStore((state) => state.changeContent);
 
 
-    const [user, setUser] = React.useState({});
+    // const [user, setUser] = React.useState<User | {}>({});
 
-    const userState = useUserStore((state) => state.user);
-
-
-    useEffect(() => {
-        console.log(userState);
-        setUser(userState);
-        
-    }, [userState]);
+    const user: User | null = useUserStore((state) => state.user);
 
     
 
@@ -35,18 +29,36 @@ const Header: NextPage = () => {
     };
 
     return (
-        <div className={clsx("wrapper d-flex justify-content-between align-items-center", styles.header)}>
-            <Link href="/" className={clsx(styles.logo)}>
-                <img src="assets/logo.svg" alt="100chasov"/>
-            </Link>
-            <Link className={clsx(styles.logo_mobile)} href="/">
-                <img src="assets/logo_mobile.svg" alt="100chasov"/>
-            </Link>
-            <div className={clsx("d-flex justify-content-between align-items-center", styles.auth)}>
-                <Button action={handlePhoneEvent}>Вход</Button>
-            </div>
+      <div
+        className={clsx(
+          "wrapper d-flex justify-content-between align-items-center",
+          styles.header,
+        )}
+      >
+        <Link href="/" className={clsx(styles.logo)}>
+          <img src="assets/logo.svg" alt="100chasov" />
+        </Link>
+        <Link className={clsx(styles.logo_mobile)} href="/">
+          <img src="assets/logo_mobile.svg" alt="100chasov" />
+        </Link>
+
+        {/*{*/}
+        {/*    userState?.login ? <div>{"login" in userState && userState?.login ? userState.login  : "User"}</div> :*/}
+        <div
+          className={clsx(
+            "d-flex justify-content-between align-items-center",
+            styles.auth,
+          )}
+        >
+          {user && <Button action={handlePhoneEvent}>Вход</Button>}
+            {/*<div>*/}
+                {user ?
+                    user?.login && <p>login</p> :
+                    <p>default</p>}
+            {/*</div>*/}
         </div>
-    )
+      </div>
+    );
 }
 
 export default Header;

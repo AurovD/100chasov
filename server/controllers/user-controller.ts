@@ -5,6 +5,8 @@ import PassportService from "../services/passport-service";
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import redis from '../../config/redis';
+import {JwtPayload} from "jsonwebtoken";
+import * as process from "node:process";
 
 
 declare module "express-serve-static-core" {
@@ -58,10 +60,39 @@ class UserController {
         await UserService.deleteUser(req.body.phone);
         return res.status(200).json({ success: true });
     }
+    async me (req: express.Request, res: express.Response): Promise<any> {
+        const token = req.cookies[cookie[1]];
+        if (!token) {
+            return res.status(401).json({ success: false, message: "No refresh token" });
+        }
+
+        const payload: string | JwtPayload = await PassportService.validateRefreshToken(token);
+        if (!payload || typeof payload === "string") {
+            return res.status(401).json({ success: false, message: "Invalid refresh token" });
+        }
+
+        const user = await UserService.findUser(undefined, (payload as JwtPayload & { id: string }).id);
+
+        const { access_token, refresh_token } = PassportService.generateTokens(String(user.id), "user");
+
+
+        res.cookie(cookie[1], refresh_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax",
+        });
+
+        return res.status(200).json({
+            success: true,
+            access_token,
+            user,
+        });
+    }
     async login(req: express.Request, res: express.Response): Promise<void> {
         try {
             const { login } = req.body;
             const userId = req.user?.id;
+            console.log(req.cookies);
 
             if (!userId || !login) {
                 res.status(400).json({ success: false, message: "Некорректные данные" });
@@ -77,8 +108,8 @@ class UserController {
 
             res.status(200).json({ success: true });
         } catch (err) {
-            console.error("Ошибка при смене логина:", err);
-            res.status(500).json({ success: false, message: "Серверная ошибка" });
+            console.log("Ошибка при смене логина:", err);
+            res.status(500).json({ success: false, message: "Серверная ошибкаhgjg" });
         }
     }
     async verifyCode (req: express.Request, res: express.Response): Promise<any> {
@@ -157,6 +188,7 @@ class UserController {
 
     async requestCode(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
         const phone: string = req.body.phone;
+        console.log(phone);
 
         if (!phone) {
             res.status(400).json({ success: false, message: "Phone is required" });

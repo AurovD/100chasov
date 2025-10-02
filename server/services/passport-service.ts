@@ -53,25 +53,14 @@ class PassportService {
     // }
     // validateRefreshToken(token) {
     // }
-    async validateTemporaryToken(token: string) {
+    async validateRefreshToken(token: string) {
         try {
-            const result = jwt.verify(
+            return  jwt.verify(
                 token,
-                process.env.JWT_TEMPORARY_SECRET || ''
+                process.env.JWT_REFRESH_SECRET || ''
             );
-            return !!result;
         } catch (e: any) {
-            if (e.name === "TokenExpiredError") {
-                console.log("TokenExpiredError");
-                return false;
-            }
-            if (e.name === "JsonWebTokenError") {
-                console.log("Invalid token structure or secret");
-                return false;
-            }
-
-            console.error("Unexpected JWT error:", e);
-            return false;
+            return "";
         }
     }
     // async findToken(id) {

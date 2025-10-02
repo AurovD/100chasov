@@ -1,11 +1,10 @@
 import type { NextPage } from 'next'
 import Header from "../components/Header";
-import Button from "../components/UI/Buttons/Button";
-import React, {useState} from "react";
+import React from "react";
 import usePopupStore from "../components/UI/Popup/store";
 import Banner from "../components/Banner";
 
-const Home: NextPage = () => {
+const Home: NextPage = (props) => {
     const popup = usePopupStore((state) => state.status);
     const openPopup = usePopupStore((state) => state.openPopup);
     const changeContent = usePopupStore((state) => state.changeContent);
@@ -30,10 +29,10 @@ const Home: NextPage = () => {
         предложения — и вы победитель, забирайте покупку :)
     </p>
 
-    const handleEvent = () => {
-        openPopup();
-        changeContent("Как это работает?", banner);
-    };
+    // const handleEvent = () => {
+    //     openPopup();
+    //     changeContent("Как это работает?", banner);
+    // };
 
   return (
     <div className={popup ? "visible" : ""}>
@@ -44,3 +43,4 @@ const Home: NextPage = () => {
 }
 
 export default Home;
+

@@ -28,8 +28,6 @@ const CodePopup: React.FC = () => {
 
 
     const handleCodeEvent = (data: UserResponse) => {
-        console.log(data);
-        
         if (data.success && data.user.updatedAt === data.user.createdAt) {
             changeContent("Имя нового пользователя", <LoginPopup />);
         } else if (data.success){
@@ -160,7 +158,7 @@ const CodePopup: React.FC = () => {
                 {/*</Button>*/}
             </form>
             {time > 0 ? (
-                <Button className="btn btn-link"
+                <Button className="btn btn-link mt-5"
                         disabled={true}
                 >
                         Отправить код еще раз через {time} секунд
@@ -168,7 +166,7 @@ const CodePopup: React.FC = () => {
             ) : (
                 <div>
                     <Button
-                        className="btn btn-link"
+                        className="btn btn-link mt-5"
                         disabled={resendCodeMutation.isPending}
                         action={() => {
                                 resendCodeMutation.mutate();
