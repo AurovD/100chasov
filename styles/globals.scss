@@ -143,11 +143,21 @@ svg {
   }
 
   .wrapper {
+    --max-width: 1110px;
+    --container-padding: 1rem;
+
+    width: min(var(--max-width), 100% - (var(--container-padding) * 2));
+    margin-inline: auto;
     background-color: var(--clr-primary-400);
     mix-blend-mode: multiply;
     position: absolute;
     inset: 0;
     z-index: 0;
+    &--full {
+      /* модификатор: на всю ширину */
+      width: 100%;
+      margin-inline: 0;
+    }
   }
 }
 .form {
@@ -174,6 +184,9 @@ svg {
     color: var(--clr-primary-400);
     font-size: 14px;
   }
+  //button {
+  //  margin-top: var(--size-500);
+  //}
 
   label {
     position: relative;

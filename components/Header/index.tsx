@@ -51,11 +51,9 @@ const Header: NextPage = () => {
           )}
         >
           {user && <Button action={handlePhoneEvent}>Вход</Button>}
-            {/*<div>*/}
-                {user ?
-                    user?.login && <p>login</p> :
-                    <p>default</p>}
-            {/*</div>*/}
+          {/*<div>*/}
+          {user && user?.login && <p>{user?.login}</p>}
+          {/*</div>*/}
         </div>
       </div>
     );

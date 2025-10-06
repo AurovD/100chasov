@@ -1,5 +1,6 @@
 /** @type {import('sequelize-cli').Migration} */
-import { USER_ROLES, USER_PERMISSIONS } from '../types/user'; 
+// const { USER_ROLES } = require('../types/user');
+const USER_ROLES = ['user', 'admin', 'moderator', 'superadmin'];
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -60,12 +61,12 @@ module.exports = {
       }
     });
 
-    await queryInterface.addIndex('Users', ['email'], { unique: true });
-    await queryInterface.addIndex('Users', ['phone'], { unique: true });
+    // await queryInterface.addIndex('Users', ['email'], { unique: true });
+    // await queryInterface.addIndex('Users', ['phone'], { unique: true });
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Users');
-    await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Users_role";');
+    // await queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Users_role";');
   }
 };

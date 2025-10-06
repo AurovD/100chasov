@@ -34,7 +34,7 @@ const Home: NextPage = () => {
 
     return (
         <div className="banner">
-            <div className="wrapper"></div>
+            <div className="wrapper wrapper--full"></div>
             <h1>Приветствуем вас на сайте «100 часов»</h1>
             <p>Это интернет-аукцион, где вы можете купить любой товар за 1/100 от его цены. Каждый час всё, что мы
                 продаём,

@@ -1,19 +1,19 @@
 'use strict';
 const { Model } = require('sequelize');
 const FlakeId = require('flake-idgen');
-import { USER_ROLES, USER_PERMISSIONS } from '../types/user'; 
-
+// const { USER_ROLES } = require('../types/user');
+const USER_ROLES = ['user', 'admin', 'moderator', 'superadmin'];
 
 const flake = new FlakeId({ id: 1 });
 
 module.exports = (sequelize, DataTypes) => {
     class Users extends Model {
-        static associate(models) {
-            Users.hasOne(models.UserRefreshTokens, {
-                foreignKey: 'userId',
-                as: 'refreshTokens'
-            });
-        }
+        // static associate(models) {
+        //     Users.hasOne(models.UserRefreshTokens, {
+        //         foreignKey: 'userId',
+        //         as: 'refreshTokens'
+        //     });
+        // }
     }
 
     Users.init({
@@ -72,7 +72,6 @@ module.exports = (sequelize, DataTypes) => {
         ],
         hooks: {
             beforeCreate: async (users) => {
-                console.log("Method 1 via the .init() method");
                 const idBuffer = flake.next();
                 users.id = BigInt("0x" + idBuffer.toString("hex")).toString();
             }

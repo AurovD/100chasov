@@ -11,7 +11,7 @@ const Button: React.FC<ButtonProps> = ({
                                        }) => {
     const combinedClassName = clsx(
         styles.button,
-        className,
+        className && styles[className],
         disabled && styles.disabled
     );
 

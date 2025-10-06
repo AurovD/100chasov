@@ -29,11 +29,6 @@ const Home: NextPage = (props) => {
         предложения — и вы победитель, забирайте покупку :)
     </p>
 
-    // const handleEvent = () => {
-    //     openPopup();
-    //     changeContent("Как это работает?", banner);
-    // };
-
   return (
     <div className={popup ? "visible" : ""}>
         <Header/>

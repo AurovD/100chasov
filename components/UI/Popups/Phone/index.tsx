@@ -91,8 +91,8 @@ const Phone: NextPage = () => {
         )}
       </form.Field>
 
-      <Button className="mt-5" type="submit" disabled={mutation.isPending}>
-        {mutation.isPending ? 'Отправка...' : 'Отправить'}
+      <Button className={clsx("mt-5")} type="submit" disabled={mutation.isPending}>
+        {mutation.isPending ? "Отправка..." : "Отправить"}
       </Button>
     </form>
   );
