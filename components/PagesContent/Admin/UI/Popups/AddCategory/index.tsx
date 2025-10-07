@@ -1,20 +1,33 @@
 
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import { useForm } from '@tanstack/react-form';
 import * as Yup from "yup";
 import {MyTextInput} from "../../../../../UI/MyTextInput";
 import Button from "../../../../../UI/Buttons/Button";
+import useCategoriesStore from "../../../../../../store/categories";
+import {useMutation} from "@tanstack/react-query";
+import {useUserStore} from "../../../../../../store/user";
 
 const AddCategory: React.FC = () => {
 
     const[message, setMessage] = useState<string>('');
 
+    const addCategory = useCategoriesStore(state => state.addCategory);
+
+
+
+    const mutation = useMutation({
+        mutationFn: addCategory,
+        // onSuccess: (data: UserResponse) => handleCodeEvent(data),
+        // onError: () => handleErrorEvent(),
+    });
+
     const form = useForm({
         defaultValues: {
-            title: "орл",
+            title: "",
         },
         onSubmit: async ({ value }) => {
-
+            mutation.mutate(value.title);
         },
     });
 

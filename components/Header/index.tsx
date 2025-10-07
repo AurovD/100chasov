@@ -6,7 +6,7 @@ import Button from "../UI/Buttons/Button";
 import React, { useEffect } from "react";
 import usePopupStore from "../UI/Popup/store";
 import Phone from "../UI/Popups/Phone";
-import { useUserStore } from 'store';
+import { useUserStore } from '../../store/user';
 import {User} from "../../types/user";
 
 const Header: NextPage = () => {
@@ -50,7 +50,7 @@ const Header: NextPage = () => {
             styles.auth,
           )}
         >
-          {user && <Button action={handlePhoneEvent}>Вход</Button>}
+          {user && <Button type={"button"} action={handlePhoneEvent}>Вход</Button>}
           {/*<div>*/}
           {user && user?.login && <p>{user?.login}</p>}
           {/*</div>*/}

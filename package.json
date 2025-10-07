@@ -45,6 +45,7 @@
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/bull": "^4.10.4",
+    "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.17",
     "@types/node": "22.7.5",
     "@types/passport": "^1.0.17",

@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useForm } from '@tanstack/react-form';
 import Button from '../../Buttons/Button';
 import styles from './CodePopup.module.scss';
-import { useUserStore } from '../../../../store';
+import { useUserStore } from '../../../../store/user';
 import { useMutation } from '@tanstack/react-query';
 import usePopupStore from "../../Popup/store";
 import { UserResponse } from 'types/user';
@@ -159,7 +159,7 @@ const CodePopup: React.FC = () => {
             </form>
             {time > 0 ? (
                 <Button className="btn btn-link mt-5"
-                        disabled={true}
+                        disabled={true} type={"submit"}
                 >
                         Отправить код еще раз через {time} секунд
                     </Button>
@@ -170,7 +170,8 @@ const CodePopup: React.FC = () => {
                         disabled={resendCodeMutation.isPending}
                         action={() => {
                                 resendCodeMutation.mutate();
-                        }} 
+                        }}
+                        type={"submit"}
                     >
                         {resendCodeMutation.isPending ? 'Отправка...' : 'Отправить код еще раз'}
                     </Button>

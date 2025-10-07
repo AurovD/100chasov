@@ -3,7 +3,6 @@ import { fetchRequest } from '../helpers/fetch-request';
 import {createStore} from './createStore';
 import {User} from "../types/user";
 import { UserResponse } from '../types/user';
-import {log} from "console";
 
 
 // type UserResponse = {success: boolean, message?: string, access_token?: string, user?: User}
@@ -16,7 +15,7 @@ export interface UserStore {
   me: () => Promise<UserResponse>;
 }
 
-export const usePhone = createStore<UserStore>(
+export const useUserStore = createStore<UserStore>(
   (set, get) => ({
       user: null,
       token: "",

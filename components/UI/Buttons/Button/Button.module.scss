@@ -7,11 +7,10 @@
   padding: var(--size-300) 2.5rem;
   font-size: var(--fs-button);
   cursor: pointer;
-  //margin-top: var(--size-500);
   margin-inline: auto;
-  //&--form {
-  //  margin-top: var(--size-500);
-  //}
+  &[type="submit"] {
+    margin-top: var(--size-500);
+  }
 }
 
 .banner_button {

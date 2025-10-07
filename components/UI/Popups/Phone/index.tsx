@@ -1,11 +1,11 @@
 import type { NextPage } from 'next';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import styles from './Phone.module.scss';
 import clsx from 'clsx';
 import 'react-phone-number-input/style.css';
 import PhoneNumberInput from '../PhoneNumberInput';
 import Button from '../../Buttons/Button';
-import { useUserStore } from '../../../../store';
+import { useUserStore } from '../../../../store/user';
 import { useMutation } from '@tanstack/react-query';
 import usePopupStore from '../../Popup/store';
 import ErrorPopup from '../ErrorPopup';
@@ -91,7 +91,7 @@ const Phone: NextPage = () => {
         )}
       </form.Field>
 
-      <Button className={clsx("mt-5")} type="submit" disabled={mutation.isPending}>
+      <Button type="submit" disabled={mutation.isPending}>
         {mutation.isPending ? "Отправка..." : "Отправить"}
       </Button>
     </form>

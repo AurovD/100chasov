@@ -7,9 +7,7 @@ import {
   useMutation,
 } from '@tanstack/react-query'
 import { useEffect } from "react"
-import { fetchRequest } from "../helpers/fetch-request"
-import { UserResponse } from "../types/user"
-import {useUserStore} from "../store";
+import {useUserStore} from "../store/user";
 
 const queryClient = new QueryClient()
 

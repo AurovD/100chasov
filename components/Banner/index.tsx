@@ -39,7 +39,7 @@ const Home: NextPage = () => {
             <p>Это интернет-аукцион, где вы можете купить любой товар за 1/100 от его цены. Каждый час всё, что мы
                 продаём,
                 дешевеет на 1%, а по какой цене сделать ставку, решаете вы.</p>
-            <Button action={handleEvent} className="banner_button">
+            <Button action={handleEvent} type={"button"} className="banner_button">
                 {"Как это работает?"}
             </Button>
         </div>

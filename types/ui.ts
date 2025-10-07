@@ -2,7 +2,7 @@ export interface ButtonProps {
   children: React.ReactNode;
   action?: React.MouseEventHandler<HTMLButtonElement>;
   className?: string;
-  type?: "button" | "submit";
+  type: "button" | "submit";
   disabled?: boolean;
 }
 

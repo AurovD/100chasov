@@ -6,7 +6,7 @@ import Button from "../../Buttons/Button";
 import { useMutation } from '@tanstack/react-query';
 import {fetchRequest} from "../../../../helpers/fetch-request";
 import {UserResponse} from "../../../../types/user";
-import {useUserStore} from "../../../../store";
+import {useUserStore} from "../../../../store/user";
 import usePopupStore from "../../Popup/store";
 
 const LoginPopup: React.FC = () => {
