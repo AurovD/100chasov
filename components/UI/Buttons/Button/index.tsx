@@ -15,6 +15,7 @@ const Button: React.FC<ButtonProps> = ({
         disabled && styles.disabled
     );
 
+    // console.log("render button")
     return (
         <button
             className={combinedClassName}

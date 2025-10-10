@@ -5,7 +5,7 @@ import clsx from "clsx";
 import AddItem from "../UI/AddItem";
 
 const Items: NextPage = (props) => {
-
+    console.log("render items");
     return (
         <div>
             <AddItem/>

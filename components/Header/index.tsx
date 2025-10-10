@@ -19,7 +19,8 @@ const Header: NextPage = () => {
 
     const user: User | null = useUserStore((state) => state.user);
 
-    
+
+    // console.log("header render");
 
     const phone = <Phone/>
 
@@ -50,9 +51,12 @@ const Header: NextPage = () => {
             styles.auth,
           )}
         >
-          {user && <Button type={"button"} action={handlePhoneEvent}>Вход</Button>}
+          <Button type={"button"} action={handlePhoneEvent}>Вход</Button>
+          {/*{user && <Button type={"button"} action={handlePhoneEvent}>Вход</Button>}*/}
           {/*<div>*/}
-          {user && user?.login && <p>{user?.login}</p>}
+            <Link href="/admin">
+                {user && user?.login && <p>{user?.login}</p>}
+            </Link>
           {/*</div>*/}
         </div>
       </div>

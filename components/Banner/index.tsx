@@ -27,6 +27,8 @@ const Home: NextPage = () => {
         предложения — и вы победитель, забирайте покупку :)
     </p>
 
+
+    // console.log("render banner");
     const handleEvent = () => {
         openPopup();
         changeContent("Как это работает?", banner);
