@@ -1,31 +1,66 @@
 import {createStore} from "./createStore";
-import {Category} from "../types/items";
 import {fetchRequest} from "../helpers/fetch-request";
 import {useUserStore} from "./user";
+import {CategoryType} from "../types/items";
+import {log} from "console";
 
 interface CategoriesState {
-    categories: [],
-    addCategory: (name: string) => Promise<Category>,
+    categories: CategoryType[],
+    addCategory: (name: string) => Promise<CategoryType | CategoryType[]>,
+    getCategories: () => Promise<CategoryType[]>,
 }
 
-const useCategoriesStore = createStore<CategoriesState>(set => ({
+const useCategoriesStore = createStore<CategoriesState>(
+  (set) => ({
     categories: [],
-    addCategory: async (name: string) => {
-        try {
+      addCategory: async (name) => {
+          try {
+              const token = useUserStore.getState().token;
 
-            const token = useUserStore.getState().token;
+              const data: CategoryType = await fetchRequest(
+                  "/admin/category/add_category",
+                  "POST",
+                  { title: name },
+                  token
+              );
 
-            const data: Category = await  fetchRequest("/admin/add_category", "POST", {title: name}, token);
+              set((state) => ({
+                  categories: [...state.categories, data],
+              }));
 
-            console.log(data)
+              return data;
+          } catch (e) {
+              return Promise.reject(e);
+          }
+      },
 
-            return Promise.resolve({
-                title: "ljlj",
-            } satisfies Category);
-        } catch (e) {
-            return Promise.reject(e);
-        }
-    }
-}), "Categories");
+      getCategories: async () => {
+          try {
+              const token = useUserStore.getState().token;
+
+              set({
+                  categories: [],
+              });
+
+              const data: CategoryType[] = await fetchRequest(
+                  "/admin/category",
+                  "GET",
+                  undefined,
+                  token
+              );
+
+              set({
+                  categories: Array.isArray(data) ? data : [],
+              });
+
+              return data;
+          } catch (e) {
+              console.error("Ошибка при загрузке категорий", e);
+              return Promise.reject(e);
+          }
+      },
+  }),
+  "Categories",
+);
 
 export default useCategoriesStore;

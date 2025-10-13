@@ -15,7 +15,7 @@ module.exports = {
       },
       parent_id: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       }
     });
   },

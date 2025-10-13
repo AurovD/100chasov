@@ -5,20 +5,25 @@ import * as Yup from "yup";
 import {MyTextInput} from "../../../../../UI/MyTextInput";
 import Button from "../../../../../UI/Buttons/Button";
 import useCategoriesStore from "../../../../../../store/categories";
-import {useMutation} from "@tanstack/react-query";
-import {useUserStore} from "../../../../../../store/user";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const AddCategory: React.FC = () => {
+
+
+const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
 
     const[message, setMessage] = useState<string>('');
 
     const addCategory = useCategoriesStore(state => state.addCategory);
+    // const categories = useCategoriesStore(state => state.categories);
 
-
+    const queryClient = useQueryClient();
 
     const mutation = useMutation({
         mutationFn: addCategory,
-        // onSuccess: (data: UserResponse) => handleCodeEvent(data),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: ["categories"] });
+            setMessage("Категория успешно добавлена ✅");
+        }
         // onError: () => handleErrorEvent(),
     });
 
@@ -64,6 +69,7 @@ const AddCategory: React.FC = () => {
                         </label>
                     )}
                 </form.Field>
+                <p>{parent_id}</p>
 
                 <Button type="submit">Отправить</Button>
             </form>

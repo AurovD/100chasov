@@ -4,13 +4,13 @@ import clsx from "clsx";
 import usePopupStore from "../../../../UI/Popup/store";
 import AddCategory from "../Popups/AddCategory";
 
-const AddItem: React.FC = () => {
+const AddItem: React.FC<{parent_id?: string}> = ({parent_id}) => {
     const openPopup = usePopupStore((state) => state.openPopup);
     const changeContent = usePopupStore((state) => state.changeContent);
 
 
 
-    const addCategory = <AddCategory/>
+    const addCategory = <AddCategory parent_id={parent_id}/>
 
     const handleAddEvent = () => {
         openPopup();

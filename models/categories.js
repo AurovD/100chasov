@@ -28,13 +28,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     parent_id: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     }
   }, {
     sequelize,
     modelName: 'Categories',
     // paranoid: true,
-    // timestamps: true,
+    timestamps: false,
     indexes: [
       // { fields: ['email'], unique: true },
       // { fields: ['phone'], unique: true }
