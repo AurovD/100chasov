@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 
 import { Categories } from "../../models";
+import { log } from "console";
 
 
 dotenv.config({

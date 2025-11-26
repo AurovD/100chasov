@@ -6,33 +6,33 @@ import {log} from "console";
 
 interface CategoriesState {
     categories: CategoryType[],
-    addCategory: (name: string) => Promise<CategoryType | CategoryType[]>,
+   addCategory: (data: { title: string; parent_id?: string }) => Promise<CategoryType>,
     getCategories: () => Promise<CategoryType[]>,
 }
 
 const useCategoriesStore = createStore<CategoriesState>(
   (set) => ({
     categories: [],
-      addCategory: async (name) => {
-          try {
-              const token = useUserStore.getState().token;
+     addCategory: async ({ title, parent_id }) => {
+    try {
+        const token = useUserStore.getState().token;
 
-              const data: CategoryType = await fetchRequest(
-                  "/admin/category/add_category",
-                  "POST",
-                  { title: name },
-                  token
-              );
+        const data: CategoryType = await fetchRequest(
+            "/admin/category/add_category",
+            "POST",
+            { title, parent_id },
+            token
+        );
 
-              set((state) => ({
-                  categories: [...state.categories, data],
-              }));
+        set((state) => ({
+            categories: [...state.categories, data],
+        }));
 
-              return data;
-          } catch (e) {
-              return Promise.reject(e);
-          }
-      },
+        return data;
+    } catch (e) {
+        return Promise.reject(e);
+    }
+},
 
       getCategories: async () => {
           try {

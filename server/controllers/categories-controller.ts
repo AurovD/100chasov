@@ -1,10 +1,12 @@
 import express from 'express';
 import CategoriesService from "../services/categories-service";
+import { log } from 'console';
 
 
 class CategoriesController {
     async addCategory(req: express.Request, res: express.Response): Promise<any> {
         try {
+            log(req.body)
             const { title, parent_id } = req.body;
 
             if (!title || typeof title !== "string") {
@@ -23,6 +25,8 @@ class CategoriesController {
     async getCategory(req: express.Request, res: express.Response): Promise<any> {
         try {
             const result = await CategoriesService.getCategories();
+            
+            log(result);
 
             return res.status(200).json(result);
         } catch (error: any) {

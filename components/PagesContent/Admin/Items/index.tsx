@@ -36,7 +36,7 @@ const Items: NextPage = () => {
 
     return (
       <div>
-          {categories.length === 0 && <AddItem />}
+          <AddItem />
           {categories.map((category) => (
               <div key={String(category.id)}>
                   <p>

@@ -70,11 +70,13 @@ const LoginPopup: React.FC = () => {
                 {(field) => (
                     <label htmlFor="login" title="Введите имя нового пользователя" className="label">
                         <MyTextInput field={field} name="login"/>
-                        {[...(field.state.meta.errors ?? []), message]
-                            .filter(Boolean)
-                            .map((err, i) => (
+                       {field.state.meta.errors?.length ? (
+                            field.state.meta.errors.map((err, i) => (
                                 <div className="error" key={i}>{err}</div>
-                            ))}
+                            ))
+                        ) : message ? (
+                            <div className="error">{message}</div>
+                        ) : null}
                     </label>
                 )}
             </form.Field>

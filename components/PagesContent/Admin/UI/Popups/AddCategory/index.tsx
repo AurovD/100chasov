@@ -33,9 +33,12 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
         defaultValues: {
             title: "",
         },
-        onSubmit: async ({ value }) => {
-            mutation.mutate(value.title);
-        },
+       onSubmit: async ({ value }) => {
+   mutation.mutate({
+    title: value.title,
+    parent_id,
+});
+},
     });
 
     return (
@@ -63,11 +66,13 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
                     {(field) => (
                         <label htmlFor="title" title="Введите название категории" className="label">
                             <MyTextInput field={field} name="title"/>
-                            {[...(field.state.meta.errors ?? []), message]
-                                .filter(Boolean)
-                                .map((err, i) => (
-                                    <div className="error" key={i}>{err}</div>
-                                ))}
+                            {field.state.meta.errors?.length ? (
+                            field.state.meta.errors.map((err, i) => (
+                                <div className="error" key={i}>{err}</div>
+                            ))
+                        ) : message ? (
+                            <div className="error">{message}</div>
+                        ) : null}
                         </label>
                     )}
                 </form.Field>

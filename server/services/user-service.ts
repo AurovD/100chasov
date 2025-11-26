@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import { Users } from "../../models";
 
 import redis from '../../config/redis';
-import {Op} from "sequelize";
+import {Op, where} from "sequelize";
 
 dotenv.config({
     path: 'server/.env'
@@ -27,6 +27,13 @@ class UserService {
             },
         );
         return updatedCount;
+    }
+    async checkLogin(login: string) {
+        return await Users.findOne({
+            where: {
+                login
+            }}
+        );
     }
     async deleteUser(phone: string, ) {
         const whereQuery = { phone };

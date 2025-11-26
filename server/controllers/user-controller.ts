@@ -92,10 +92,17 @@ class UserController {
         try {
             const { login } = req.body;
             const userId = req.user?.id;
-            console.log(req.cookies);
+
 
             if (!userId || !login) {
                 res.status(400).json({ success: false, message: "Некорректные данные" });
+                return;
+            }
+
+            const usedLogin = await UserService.checkLogin(login);
+
+            if(usedLogin){
+                res.status(404).json({ success: false, message: "Пользователь с таким логином уже существует" });
                 return;
             }
 
