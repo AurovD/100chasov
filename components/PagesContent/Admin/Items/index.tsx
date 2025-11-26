@@ -19,7 +19,7 @@ const Items: NextPage = () => {
 
     const handleRemoveEvent = (id: string, title: string) => {
         openPopup();
-        changeContent("Удалить категорию", <RemoveCategory parent_id={id} title={title} />);
+        changeContent("Удалить категорию", <RemoveCategory category_id={id} title={title} />);
     };
 
 
@@ -36,6 +36,7 @@ const Items: NextPage = () => {
 
     return (
       <div>
+          {categories.length === 0 && <AddItem />}
           {categories.map((category) => (
               <div key={String(category.id)}>
                   <p>

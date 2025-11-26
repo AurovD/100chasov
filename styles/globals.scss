@@ -54,7 +54,7 @@
   --sizeindex: calc(1vw + 1vh);
 }
 
-@media(max-width: 500px) {
+@media(max-width: 770px) {
   :root {
     --fs-body: var(--fs-300);
     --fs-primary-heading: var(--fs-500);

@@ -52,27 +52,27 @@ class CategoriesController {
     //     }
     // }
     //
-    // // ✅ Удалить категорию
-    // async deleteCategory(req: express.Request, res: express.Response): Promise<any> {
-    //     try {
-    //         const { id } = req.params;
-    //
-    //         if (!id) {
-    //             return res.status(400).json({ success: false, message: "ID категории не указан" });
-    //         }
-    //
-    //         const deleted = await CategoriesService.deleteCategory(id);
-    //
-    //         if (!deleted) {
-    //             return res.status(404).json({ success: false, message: "Категория не найдена" });
-    //         }
-    //
-    //         return res.status(200).json({ success: true, message: "Категория удалена" });
-    //     } catch (error: any) {
-    //         console.error("Ошибка при удалении категории:", error);
-    //         return res.status(500).json({ success: false, message: "Ошибка сервера", error: error.message });
-    //     }
-    // }
+    async removeCategory(req: express.Request, res: express.Response): Promise<any> {
+        try {
+            console.log(req.query);
+            const id  = req.query.id;
+
+            if (!id || typeof id !== "string") {
+                return res.status(400).json({ success: false, message: "Некорректный ID категории" });
+            }
+
+            const deleted = await CategoriesService.removeCategory(id);
+
+            if (!deleted) {
+                return res.status(404).json({ success: false, message: "Категория не найдена" });
+            }
+
+            return res.status(200).json({ success: true, message: "Категория удалена" });
+        } catch (error: any) {
+            console.error("Ошибка при удалении категории:", error);
+            return res.status(500).json({ success: false, message: "Ошибка сервера", error: error.message });
+        }
+    }
     //
     // // ✅ Обновить категорию
     // async updateCategory(req: express.Request, res: express.Response): Promise<any> {

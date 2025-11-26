@@ -3,23 +3,26 @@ import React from "react";
 import Button from "../../../../../UI/Buttons/Button";
 import {fetchRequest} from "../../../../../../helpers/fetch-request";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import useCategoriesStore from "../../../../../../store/categories";
+import {useUserStore} from "../../../../../../store/user";
+import usePopupStore from "../../../../../UI/Popup/store";
 
 
 
-const RemoveCategory: React.FC<{parent_id: string, title: string}> = ({ parent_id, title }) => {
+const RemoveCategory: React.FC<{category_id: string, title: string}> = ({ category_id, title }) => {
 
+    const token = useUserStore(state => state.token);
+    const closePopup = usePopupStore((state) => state.closePopup);
 
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
         mutationFn: async () => {
-            return await fetchRequest(`/categories/${parent_id}`, {
-                method: "DELETE",
-            });
+            return await fetchRequest(`/admin/category/remove?id=${category_id}`, "DELETE", undefined, token);
         },
         onSuccess: () => {
-            // Обновляем кэш категорий после удаления
             queryClient.invalidateQueries({ queryKey: ["categories"] });
+            closePopup();
         },
     });
 
@@ -30,7 +33,7 @@ const RemoveCategory: React.FC<{parent_id: string, title: string}> = ({ parent_i
 
     return <div className={"d-flex flex-column"}>
       Вы действительно ходите удалить категорию {title}?
-      <Button type={"button"} >
+      <Button action={handleRemove} type={"submit"}>
           Удалить
       </Button>
   </div>;

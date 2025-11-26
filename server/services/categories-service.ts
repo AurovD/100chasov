@@ -2,8 +2,6 @@ import dotenv from "dotenv";
 
 import { Categories } from "../../models";
 
-import redis from '../../config/redis';
-import {Op} from "sequelize";
 
 dotenv.config({
     path: 'server/.env'
@@ -20,6 +18,12 @@ class CategoriesService {
     }
     async getCategories() {
         return await Categories.findAll();
+    }
+    async removeCategory(id: string) {
+        const deletedCount = await Categories.destroy({
+            where: { id }
+        });
+        return deletedCount > 0;
     }
 }
 

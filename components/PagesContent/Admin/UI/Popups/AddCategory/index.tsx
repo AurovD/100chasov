@@ -6,6 +6,7 @@ import {MyTextInput} from "../../../../../UI/MyTextInput";
 import Button from "../../../../../UI/Buttons/Button";
 import useCategoriesStore from "../../../../../../store/categories";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import usePopupStore from "../../../../../UI/Popup/store";
 
 
 
@@ -14,7 +15,7 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
     const[message, setMessage] = useState<string>('');
 
     const addCategory = useCategoriesStore(state => state.addCategory);
-    // const categories = useCategoriesStore(state => state.categories);
+    const closePopup = usePopupStore((state) => state.closePopup);
 
     const queryClient = useQueryClient();
 
@@ -23,6 +24,7 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["categories"] });
             setMessage("Категория успешно добавлена ✅");
+            closePopup();
         }
         // onError: () => handleErrorEvent(),
     });
@@ -69,7 +71,6 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
                         </label>
                     )}
                 </form.Field>
-                <p>{parent_id}</p>
 
                 <Button type="submit">Отправить</Button>
             </form>
