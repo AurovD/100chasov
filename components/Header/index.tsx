@@ -37,10 +37,10 @@ const Header: NextPage = () => {
         )}
       >
         <Link href="/" className={clsx(styles.logo)}>
-          <img src="assets/logo.svg" alt="100chasov" />
+          <img src="/assets/logo.svg" alt="100chasov" />
         </Link>
         <Link className={clsx(styles.logo_mobile)} href="/">
-          <img src="assets/logo_mobile.svg" alt="100chasov" />
+          <img src="/assets/logo_mobile.svg" alt="100chasov" />
         </Link>
 
         {/*{*/}
@@ -54,7 +54,7 @@ const Header: NextPage = () => {
           <Button type={"button"} action={handlePhoneEvent}>Вход</Button>
           {/*{user && <Button type={"button"} action={handlePhoneEvent}>Вход</Button>}*/}
           {/*<div>*/}
-            <Link href="/admin">
+            <Link href="/admin/categories">
                 {user && user?.login && <p>{user?.login}</p>}
             </Link>
           {/*</div>*/}

@@ -1,16 +1,18 @@
 
-import React, {useRef, useState} from "react";
-import { useForm } from '@tanstack/react-form';
+import React, {useState} from "react";
+import Button from "../../../../../../UI/Buttons/Button";
+import {fetchRequest} from "../../../../../../../helpers/fetch-request";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import useCategoriesStore from "../../../../../../../store/categories";
+import {useUserStore} from "../../../../../../../store/user";
+import usePopupStore from "../../../../../../UI/Popup/store";
+import {useForm} from "@tanstack/react-form";
 import * as Yup from "yup";
-import {MyTextInput} from "../../../../../UI/MyTextInput";
-import Button from "../../../../../UI/Buttons/Button";
-import useCategoriesStore from "../../../../../../store/categories";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import usePopupStore from "../../../../../UI/Popup/store";
+import {MyTextInput} from "../../../../../../UI/MyTextInput";
 
 
 
-const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
+const EditCategory: React.FC<{category_id: string, title: string}> = ({ category_id, title }) => {
 
     const[message, setMessage] = useState<string>('');
 
@@ -31,14 +33,14 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
 
     const form = useForm({
         defaultValues: {
-            title: "",
+            title: title,
         },
-       onSubmit: async ({ value }) => {
-   mutation.mutate({
-    title: value.title,
-    parent_id,
-});
-},
+        onSubmit: async ({ value }) => {
+            mutation.mutate({
+                title: value.title,
+                // parent_id,
+            });
+        },
     });
 
     return (
@@ -67,12 +69,12 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
                         <label htmlFor="title" title="Введите название категории" className="label">
                             <MyTextInput field={field} name="title"/>
                             {field.state.meta.errors?.length ? (
-                            field.state.meta.errors.map((err, i) => (
-                                <div className="error" key={i}>{err}</div>
-                            ))
-                        ) : message ? (
-                            <div className="error">{message}</div>
-                        ) : null}
+                                field.state.meta.errors.map((err, i) => (
+                                    <div className="error" key={i}>{err}</div>
+                                ))
+                            ) : message ? (
+                                <div className="error">{message}</div>
+                            ) : null}
                         </label>
                     )}
                 </form.Field>
@@ -80,8 +82,8 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
                 <Button type="submit">Отправить</Button>
             </form>
         </div>
-);
+    );
+
 };
 
-export default AddCategory;
-
+export default EditCategory;

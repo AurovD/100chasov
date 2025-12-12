@@ -1,11 +1,11 @@
 
 import React from "react";
-import Button from "../../../../../UI/Buttons/Button";
-import {fetchRequest} from "../../../../../../helpers/fetch-request";
+import Button from "../../../../../../UI/Buttons/Button";
+import {fetchRequest} from "../../../../../../../helpers/fetch-request";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import useCategoriesStore from "../../../../../../store/categories";
-import {useUserStore} from "../../../../../../store/user";
-import usePopupStore from "../../../../../UI/Popup/store";
+import useCategoriesStore from "../../../../../../../store/categories";
+import {useUserStore} from "../../../../../../../store/user";
+import usePopupStore from "../../../../../../UI/Popup/store";
 
 
 

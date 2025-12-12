@@ -1,0 +1,9 @@
+.category_container {
+  border: 1px solid var(--clr-primary-400);
+  margin: 1rem;
+  padding: 1rem;
+  .category_title {
+    cursor: pointer;
+    font-size: 1.5rem;
+  }
+}

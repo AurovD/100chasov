@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./AddItem.module.scss";
 import clsx from "clsx";
-import usePopupStore from "../../../../UI/Popup/store";
+import usePopupStore from "../../../../../UI/Popup/store";
 import AddCategory from "../Popups/AddCategory";
 
 const AddItem: React.FC<{parent_id?: string}> = ({parent_id}) => {

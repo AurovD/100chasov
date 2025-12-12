@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import Header from "../components/Header";
 import React from "react";
 import usePopupStore from "../components/UI/Popup/store";
@@ -31,10 +32,13 @@ const Home: NextPage = (props) => {
 
   return (
     <div className={popup ? "visible" : ""}>
-        <Header/>
-        <Banner/>
+      <Head>
+        <title>100 часов</title>
+      </Head>
+      <Header />
+      <Banner />
     </div>
-  )
+  );
 }
 
 export default Home;
