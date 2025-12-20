@@ -2,8 +2,9 @@ import type { NextPage } from 'next'
 import React from "react";
 import Header from "../../../components/Header";
 import Head from "next/head";
+import Products from "../../../components/PagesContent/Admin/Products";
 
-const ItemsPage: NextPage = (props) => {
+const ProductsPage: NextPage = (props) => {
 
     return (
         <div className={"wrapper"}>
@@ -11,8 +12,10 @@ const ItemsPage: NextPage = (props) => {
                 <title>Toвары</title>
             </Head>
             <Header/>
+            products
+            {/*<Products/>*/}
             </div>
     )
 }
 
-export default ItemsPage;
+export default ProductsPage;

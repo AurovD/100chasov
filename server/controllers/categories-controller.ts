@@ -6,11 +6,16 @@ import { log } from 'console';
 class CategoriesController {
     async addCategory(req: express.Request, res: express.Response): Promise<any> {
         try {
-            log(req.body)
             const { title, parent_id } = req.body;
 
             if (!title || typeof title !== "string") {
                 return res.status(400).json({ success: false, message: "Поле title обязательно и должно быть строкой" });
+            }
+
+            const checkTitle = await CategoriesService.checkTitle(title);
+
+            if (checkTitle) {
+                return res.status(400).json({ success: false, message: "Категория с таким " });
             }
 
             const result = await CategoriesService.createCategory(title.trim(), parent_id);
@@ -25,8 +30,6 @@ class CategoriesController {
     async getCategory(req: express.Request, res: express.Response): Promise<any> {
         try {
             const result = await CategoriesService.getCategories();
-            
-            log(result);
 
             return res.status(200).json(result);
         } catch (error: any) {
@@ -34,31 +37,9 @@ class CategoriesController {
             return res.status(500).json({ success: false, message: "Ошибка сервера", error: error.message });
         }
     }
-    // // ✅ Получить категорию по ID
-    // async getCategoryById(req: express.Request, res: express.Response): Promise<any> {
-    //     try {
-    //         const { id } = req.params;
-    //
-    //         if (!id) {
-    //             return res.status(400).json({ success: false, message: "ID категории не указан" });
-    //         }
-    //
-    //         const category = await CategoriesService.getCategoryById(id);
-    //
-    //         if (!category) {
-    //             return res.status(404).json({ success: false, message: "Категория не найдена" });
-    //         }
-    //
-    //         return res.status(200).json({ success: true, data: category });
-    //     } catch (error: any) {
-    //         console.error("Ошибка при получении категории по ID:", error);
-    //         return res.status(500).json({ success: false, message: "Ошибка сервера", error: error.message });
-    //     }
-    // }
-    //
+
     async removeCategory(req: express.Request, res: express.Response): Promise<any> {
         try {
-            console.log(req.query);
             const id  = req.query.id;
 
             if (!id || typeof id !== "string") {
@@ -67,8 +48,16 @@ class CategoriesController {
 
             const deleted = await CategoriesService.removeCategory(id);
 
+
             if (!deleted) {
                 return res.status(404).json({ success: false, message: "Категория не найдена" });
+            }
+
+            const childrenCount = await CategoriesService.childrenCount(id);
+            log(childrenCount, "count");
+
+            if (childrenCount > 0) {
+                return res.status(404).json({ success: false, message: 'Нельзя удалить категорию с дочерними категориями' });
             }
 
             return res.status(200).json({ success: true, message: "Категория удалена" });

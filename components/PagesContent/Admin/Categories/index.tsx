@@ -11,6 +11,7 @@ import {useSortedCategories} from "../../../../hooks/useSortedCategories";
 import clsx from "clsx";
 import styles from "./Categories.module.scss";
 import EditCategory from "../UI/Categories/Popups/EditCategory";
+import Link from "next/link";
 
 
 const Category: React.FC<{
@@ -19,31 +20,38 @@ const Category: React.FC<{
     handleEditEvent: (id: string, title: string) => void;
 }> = ({ categories, handleRemoveEvent, handleEditEvent }) => {
     return (
-        <>
-            {categories.length > 0 &&
-                categories.map((category) => (
-                    <div key={String(category.id)} className={clsx(styles.category_container)}>
-                        <p className={clsx(styles.category_title)}>{category.title}</p>
+      <>
+        {categories.length > 0 &&
+          categories.map((category) => (
+            <div
+              key={String(category.id)}
+              className={clsx(styles.category_container)}
+            >
+              <Link className={clsx(styles.logo_mobile)} href="/admin/categories/khkhj">
+                <p className={clsx(styles.category_title)}>{category.title}</p>
+              </Link>
 
-                        <div onClick={() => handleRemoveEvent(category.id, category.title)}>
-                            Удалить
-                        </div>
-                        <div onClick={() => handleEditEvent(category.id, category.title)}>
-                            Редактировать
-                        </div>
+              <div
+                onClick={() => handleRemoveEvent(category.id, category.title)}
+              >
+                Удалить
+              </div>
+              <div onClick={() => handleEditEvent(category.id, category.title)}>
+                Редактировать
+              </div>
 
-                        <AddItem parent_id={category.id} />
+              <AddItem parent_id={category.id} />
 
-                        {category.children && category.children.length > 0 && (
-                            <Category
-                                categories={category.children}
-                                handleRemoveEvent={handleRemoveEvent}
-                                handleEditEvent={handleEditEvent}
-                            />
-                        )}
-                    </div>
-                ))}
-        </>
+              {category.children && category.children.length > 0 && (
+                <Category
+                  categories={category.children}
+                  handleRemoveEvent={handleRemoveEvent}
+                  handleEditEvent={handleEditEvent}
+                />
+              )}
+            </div>
+          ))}
+      </>
     );
 };
 

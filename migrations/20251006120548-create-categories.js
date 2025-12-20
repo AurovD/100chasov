@@ -13,6 +13,11 @@ module.exports = {
         unique: true,
         allowNull: false
       },
+      // link: {
+      //   type: Sequelize.STRING,
+      //   unique: true,
+      //   allowNull: false
+      // },
       parent_id: {
         type: Sequelize.STRING,
         allowNull: true

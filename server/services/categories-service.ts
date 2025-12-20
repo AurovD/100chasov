@@ -26,6 +26,19 @@ class CategoriesService {
         });
         return deletedCount > 0;
     }
+    async childrenCount(id: string) {
+        return await Categories.count({
+            where: {
+                parent_id: id
+            }})
+    }
+    async checkTitle(title: string) {
+        return await Categories.findOne({
+            where: {
+                title
+            }
+        })
+    }
 }
 
 

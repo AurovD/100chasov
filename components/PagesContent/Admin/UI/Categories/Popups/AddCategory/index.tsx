@@ -23,7 +23,7 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
         mutationFn: addCategory,
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["categories"] });
-            setMessage("Категория успешно добавлена ✅");
+            setMessage("");
             closePopup();
         }
         // onError: () => handleErrorEvent(),
