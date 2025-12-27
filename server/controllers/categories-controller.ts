@@ -6,7 +6,7 @@ import { log } from 'console';
 class CategoriesController {
     async addCategory(req: express.Request, res: express.Response): Promise<any> {
         try {
-            const { title, parent_id } = req.body;
+            const { title, link, parent_id } = req.body;
 
             if (!title || typeof title !== "string") {
                 return res.status(400).json({ success: false, message: "Поле title обязательно и должно быть строкой" });
@@ -15,10 +15,10 @@ class CategoriesController {
             const checkTitle = await CategoriesService.checkTitle(title);
 
             if (checkTitle) {
-                return res.status(400).json({ success: false, message: "Категория с таким " });
+                return res.status(400).json({ success: false, message: "Существующая категория" });
             }
 
-            const result = await CategoriesService.createCategory(title.trim(), parent_id);
+            const result = await CategoriesService.createCategory(title.trim(), link.trim(), parent_id);
 
             return res.status(201).json({ success: true, data: result });
         } catch (error: any) {
@@ -45,19 +45,18 @@ class CategoriesController {
             if (!id || typeof id !== "string") {
                 return res.status(400).json({ success: false, message: "Некорректный ID категории" });
             }
+            const childrenCount = await CategoriesService.childrenCount(id);
+            log(childrenCount, "count");
+
+            if (childrenCount > 0) {
+                return res.status(404).json({ success: false, message: 'Нельзя удалить категорию с дочерними категориями' });
+            }
 
             const deleted = await CategoriesService.removeCategory(id);
 
 
             if (!deleted) {
                 return res.status(404).json({ success: false, message: "Категория не найдена" });
-            }
-
-            const childrenCount = await CategoriesService.childrenCount(id);
-            log(childrenCount, "count");
-
-            if (childrenCount > 0) {
-                return res.status(404).json({ success: false, message: 'Нельзя удалить категорию с дочерними категориями' });
             }
 
             return res.status(200).json({ success: true, message: "Категория удалена" });

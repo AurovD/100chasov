@@ -1,26 +1,26 @@
 import {createStore} from "./createStore";
 import {fetchRequest} from "../helpers/fetch-request";
 import {useUserStore} from "./user";
-import {CategoryType} from "../types/items";
+import {CategoryType} from "../types/categories";
 import {log} from "console";
 
 interface CategoriesState {
     categories: CategoryType[],
-   addCategory: (data: { title: string; parent_id?: string }) => Promise<CategoryType>,
+   addCategory: (data: { title: string; link: string, parent_id?: string }) => Promise<CategoryType>,
     getCategories: () => Promise<CategoryType[]>,
 }
 
 const useCategoriesStore = createStore<CategoriesState>(
   (set) => ({
     categories: [],
-     addCategory: async ({ title, parent_id }) => {
+     addCategory: async ({ title, link,  parent_id }) => {
     try {
         const token = useUserStore.getState().token;
 
         const data: CategoryType = await fetchRequest(
             "/admin/category/add_category",
             "POST",
-            { title, parent_id },
+            { title, link, parent_id },
             token
         );
 

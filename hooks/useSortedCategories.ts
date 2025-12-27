@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import {CategoryType} from "../types/items";
+import {CategoryType} from "../types/categories";
 
 export const useSortedCategories = (categories: CategoryType[]) => {
 

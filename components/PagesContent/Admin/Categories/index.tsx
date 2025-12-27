@@ -3,7 +3,7 @@ import React from "react";
 import AddItem from "../UI/Categories/AddItem";
 import useCategoriesStore from "../../../../store/categories";
 import { useQuery } from "@tanstack/react-query";
-import { CategoryType } from "../../../../types/items";
+import { CategoryType } from "../../../../types/categories";
 import {useUserStore} from "../../../../store/user";
 import usePopupStore from "../../../UI/Popup/store";
 import RemoveCategory from "../UI/Categories/Popups/RemoveCategory";
@@ -16,9 +16,9 @@ import Link from "next/link";
 
 const Category: React.FC<{
     categories: CategoryType[];
-    handleRemoveEvent: (id: string, title: string) => void;
     handleEditEvent: (id: string, title: string) => void;
-}> = ({ categories, handleRemoveEvent, handleEditEvent }) => {
+    handleRemoveEvent?: (id: string, title: string) => void;
+}> = ({ categories, handleEditEvent, handleRemoveEvent,}) => {
     return (
       <>
         {categories.length > 0 &&
@@ -27,15 +27,24 @@ const Category: React.FC<{
               key={String(category.id)}
               className={clsx(styles.category_container)}
             >
-              <Link className={clsx(styles.logo_mobile)} href="/admin/categories/khkhj">
+              <Link
+                className={clsx(styles.logo_mobile)}
+                href={`/admin/categories/${category.link}`}
+              >
                 <p className={clsx(styles.category_title)}>{category.title}</p>
               </Link>
 
-              <div
-                onClick={() => handleRemoveEvent(category.id, category.title)}
-              >
-                Удалить
-              </div>
+              {handleRemoveEvent &&
+                category.children &&
+                category.children.length <= 0 && (
+                  <div
+                    onClick={() =>
+                      handleRemoveEvent(category.id, category.title)
+                    }
+                  >
+                    Удалить
+                  </div>
+                )}
               <div onClick={() => handleEditEvent(category.id, category.title)}>
                 Редактировать
               </div>

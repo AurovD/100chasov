@@ -26,11 +26,11 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false
     },
-    // link: {
-    //   type: DataTypes.STRING,
-    //   unique: true,
-    //   allowNull: false
-    // },
+    link: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false
+    },
     parent_id: {
       type: DataTypes.STRING,
       allowNull: true

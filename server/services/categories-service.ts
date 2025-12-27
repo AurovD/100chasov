@@ -11,9 +11,10 @@ dotenv.config({
 
 
 class CategoriesService {
-    async createCategory(title: string, parent_id?: string ) {
+    async createCategory(title: string, link: string, parent_id?: string ) {
         return await Categories.create({
             title,
+            link,
             parent_id
         });
     }
