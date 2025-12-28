@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: 0
         },
-        isBanned: {
+        is_banned: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         }
@@ -68,7 +68,8 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: true,
         indexes: [
             { fields: ['email'], unique: true },
-            { fields: ['phone'], unique: true }
+            { fields: ['phone'], unique: true },
+            { fields: ['login'], unique: true },
         ],
         hooks: {
             beforeCreate: async (users) => {

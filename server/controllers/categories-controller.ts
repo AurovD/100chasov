@@ -1,12 +1,13 @@
 import express from 'express';
 import CategoriesService from "../services/categories-service";
 import { log } from 'console';
+import {slugify} from "../../helpers/slugify";
 
 
 class CategoriesController {
     async addCategory(req: express.Request, res: express.Response): Promise<any> {
         try {
-            const { title, link, parent_id } = req.body;
+            const { title, parent_id } = req.body;
 
             if (!title || typeof title !== "string") {
                 return res.status(400).json({ success: false, message: "Поле title обязательно и должно быть строкой" });
@@ -18,7 +19,11 @@ class CategoriesController {
                 return res.status(400).json({ success: false, message: "Существующая категория" });
             }
 
-            const result = await CategoriesService.createCategory(title.trim(), link.trim(), parent_id);
+            let link = slugify(title.trim());
+
+            //TODO сначала создание потом довавление link+id убрал allownull
+
+            const result = await CategoriesService.createCategory(title.trim(), link, parent_id);
 
             return res.status(201).json({ success: true, data: result });
         } catch (error: any) {

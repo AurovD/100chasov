@@ -44,7 +44,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
-      isBanned: {
+      is_banned: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },

@@ -16,7 +16,7 @@ const ErrorPopup: React.FC = () => {
   return (
     <div className={"d-flex flex-column"}>
       <div>Проверьте соединение с интернетом или зайдите позже</div>
-      <Button action={returnHandler}>Вернутся назад</Button>
+      <Button className={"mt-5"} type="submit" action={returnHandler}>Вернутся назад</Button>
     </div>
   );
 };

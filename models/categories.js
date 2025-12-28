@@ -7,12 +7,12 @@ const flake = new FlakeId({ id: 1 });
 
 module.exports = (sequelize, DataTypes) => {
   class Categories extends Model {
-    // static associate(models) {
-    //     Users.hasOne(models.UserRefreshTokens, {
-    //         foreignKey: 'userId',
-    //         as: 'refreshTokens'
-    //     });
-    // }
+    static associate(models) {
+      Categories.hasMany(models.Products, {
+        foreignKey: 'category_id',
+        as: 'products',
+      });
+    }
   }
 
   Categories.init({
@@ -24,12 +24,12 @@ module.exports = (sequelize, DataTypes) => {
     title: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: false
+      // allowNull: false
     },
     link: {
       type: DataTypes.STRING,
       unique: true,
-      allowNull: false
+      // allowNull: false
     },
     parent_id: {
       type: DataTypes.STRING,
@@ -41,8 +41,9 @@ module.exports = (sequelize, DataTypes) => {
     // paranoid: true,
     timestamps: false,
     indexes: [
-      // { fields: ['email'], unique: true },
-      // { fields: ['phone'], unique: true }
+      { fields: ['link'], unique: true },
+      { fields: ['title'], unique: true },
+      { fields: ['parent_id']},
     ],
     hooks: {
       beforeCreate: async (categories) => {

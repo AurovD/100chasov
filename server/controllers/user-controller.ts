@@ -34,8 +34,6 @@ class UserController {
 
         let updatedAttemptsRequestCode = attemptsRequestCode + 1;
 
-        console.log(updatedAttemptsRequestCode);
-
         if(updatedAttemptsRequestCode >= 5){
             return res.status(400).json({ success: false, attempts: updatedAttemptsRequestCode, message: "Вы исчерпали количество попыток" });
         }
@@ -63,18 +61,20 @@ class UserController {
     async me (req: express.Request, res: express.Response): Promise<any> {
         const token = req.cookies[cookie[1]];
         if (!token) {
-            return res.status(401).json({ success: false, message: "No refresh token" });
+            return res.status(401).json({ success: false, message: "Отсуствует токен" });
         }
 
         const payload: string | JwtPayload = await PassportService.validateRefreshToken(token);
         if (!payload || typeof payload === "string") {
-            return res.status(401).json({ success: false, message: "Invalid refresh token" });
+            return res.status(401).json({ success: false, message: "Неверный токен" });
         }
 
         const user = await UserService.findUser(undefined, (payload as JwtPayload & { id: string }).id);
 
+        if(!user){
+            return res.status(401).json({ success: false, message: "Польщователь не найден" });
+        }
         const { access_token, refresh_token } = PassportService.generateTokens(String(user.id), "user");
-
 
         res.cookie(cookie[1], refresh_token, {
             httpOnly: true,
@@ -204,7 +204,6 @@ class UserController {
 
         const isBanned = await UserService.getRedis(`ban:${phone}`);
 
-        console.log(isBanned);
 
         if (isBanned) {
             res.status(400).json({ success: false, message: "Превышано количество попыток" });
