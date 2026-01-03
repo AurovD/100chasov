@@ -1,6 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 const FlakeId = require('flake-idgen');
+const {slugify} = require("../helpers/slugify");
 
 
 const flake = new FlakeId({ id: 1 });
@@ -11,6 +12,14 @@ module.exports = (sequelize, DataTypes) => {
       Categories.hasMany(models.Products, {
         foreignKey: 'category_id',
         as: 'products',
+      });
+      Categories.belongsTo(models.Categories, {
+        foreignKey: 'parent_id',
+        as: 'parent',
+      });
+      Categories.hasMany(models.Categories, {
+        foreignKey: 'parent_id',
+        as: 'children',
       });
     }
   }
@@ -42,13 +51,18 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     indexes: [
       { fields: ['link'], unique: true },
-      { fields: ['title'], unique: true },
-      { fields: ['parent_id']},
+      { fields: ['parent_id', 'title'], unique: true },
     ],
     hooks: {
       beforeCreate: async (categories) => {
-        const idBuffer = flake.next();
-        categories.id = BigInt("0x" + idBuffer.toString("hex")).toString();
+        if (!categories.id) {
+          const idBuffer = flake.next();
+          categories.id = BigInt("0x" + idBuffer.toString("hex")).toString();
+        }
+
+          const slug = slugify(categories.title);
+
+          categories.link = `${slug}-${categories.id}`;
       }
     }
   });

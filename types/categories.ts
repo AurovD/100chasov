@@ -6,4 +6,5 @@ export interface CategoryType  {
     children?: CategoryType[]
     message?: string,
     link: string
+    success?: boolean
 }

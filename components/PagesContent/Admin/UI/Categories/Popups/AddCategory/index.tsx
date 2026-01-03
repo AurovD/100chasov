@@ -8,6 +8,7 @@ import useCategoriesStore from "../../../../../../../store/categories";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import usePopupStore from "../../../../../../UI/Popup/store";
 import {CategoryType} from "../../../../../../../types/categories";
+import ErrorPopup from "../../../../../../UI/Popups/ErrorPopup";
 
 
 
@@ -17,8 +18,15 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
 
     const addCategory = useCategoriesStore(state => state.addCategory);
     const closePopup = usePopupStore((state) => state.closePopup);
+    const changeContent = usePopupStore((state) => state.changeContent);
 
     const queryClient = useQueryClient();
+
+
+    const handleErrorEvent = () => {
+        changeContent("Сервис не отвечает", <ErrorPopup />);
+    };
+
 
     const mutation = useMutation({
         mutationFn: addCategory,
@@ -30,8 +38,8 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
                 setMessage("");
                 closePopup();
             }
-        }
-        // onError: () => handleErrorEvent(),
+        },
+        onError: () => handleErrorEvent(),
     });
 
     const form = useForm({
@@ -72,18 +80,17 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
                     {(field) => (
                         <label htmlFor="title" title="Введите название категории" className="label">
                             <MyTextInput field={field} name="title"/>
-                            {field.state.meta.errors.map((err, i) => (
-                                <div className="error" key={i}>{err}</div>
-                            ))}
+                            {field.state.meta.errors?.length ? (
+                                field.state.meta.errors.map((err, i) => (
+                                    <div className="error" key={i}>{err}</div>
+                                ))
+                            ) : message ? (
+                                <div className="error">{message}</div>
+                            ) : null}
                         </label>
                     )}
                 </form.Field>
-
-                {message ? <Button className="btn btn-link mt-5"
-                                    disabled={true} type={"submit"}
-                >
-                    {message}
-                </Button> : <Button type="submit">Отправить</Button>}
+                <Button type="submit">Отправить</Button>
             </form>
         </div>
 );
@@ -91,3 +98,4 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
 
 export default AddCategory;
 
+//TODO о

@@ -1,8 +1,10 @@
 export interface Products  {
-    // title: string,
-    // id: string,
-    // parent_id: string,
-    // children?: CategoryType[]
-    // message?: string,
-    // link: string
+    title: string,
+    id: string,
+    count: number,
+    description: string
+    message?: string,
+    link: string,
+    category_id: string,
+    images: string[],
 }

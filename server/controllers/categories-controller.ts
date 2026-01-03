@@ -10,20 +10,16 @@ class CategoriesController {
             const { title, parent_id } = req.body;
 
             if (!title || typeof title !== "string") {
-                return res.status(400).json({ success: false, message: "Поле title обязательно и должно быть строкой" });
+                return res.status(400).json({ success: true, message: "Поле title обязательно и должно быть строкой" });
             }
 
             const checkTitle = await CategoriesService.checkTitle(title);
 
             if (checkTitle) {
-                return res.status(400).json({ success: false, message: "Существующая категория" });
+                return res.status(400).json({ success: true, message: "Существующая категория" });
             }
 
-            let link = slugify(title.trim());
-
-            //TODO сначала создание потом довавление link+id убрал allownull
-
-            const result = await CategoriesService.createCategory(title.trim(), link, parent_id);
+            const result = await CategoriesService.createCategory(title.trim(), parent_id);
 
             return res.status(201).json({ success: true, data: result });
         } catch (error: any) {
@@ -35,7 +31,6 @@ class CategoriesController {
     async getCategory(req: express.Request, res: express.Response): Promise<any> {
         try {
             const result = await CategoriesService.getCategories();
-
             return res.status(200).json(result);
         } catch (error: any) {
             console.error("Ошибка при получении категорий:", error);
@@ -61,7 +56,7 @@ class CategoriesController {
 
 
             if (!deleted) {
-                return res.status(404).json({ success: false, message: "Категория не найдена" });
+                return res.status(404).json({ success: true, message: "Категория не найдена" });
             }
 
             return res.status(200).json({ success: true, message: "Категория удалена" });

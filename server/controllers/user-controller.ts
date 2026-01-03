@@ -198,7 +198,7 @@ class UserController {
         console.log(phone);
 
         if (!phone) {
-            res.status(400).json({ success: false, message: "Phone is required" });
+            res.status(400).json({ success: false, message: "Требуется номер телефона" });
             return;
         }
 

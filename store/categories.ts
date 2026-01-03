@@ -24,9 +24,15 @@ const useCategoriesStore = createStore<CategoriesState>(
             token
         );
 
-        set((state) => ({
-            categories: [...state.categories, data],
-        }));
+        if (!data.success) {
+            throw new Error(data.message || "Ошибка создания категории");
+        }
+
+        if(data.success){
+            set((state) => ({
+                categories: [...state.categories, data],
+            }));
+        }
 
         return data;
     } catch (e) {
@@ -48,6 +54,11 @@ const useCategoriesStore = createStore<CategoriesState>(
                   undefined,
                   token
               );
+
+              // if (!data.success) {
+              //     throw new Error(data.message || "Ошибка создания категории");
+              // }
+
 
               set({
                   categories: Array.isArray(data) ? data : [],
