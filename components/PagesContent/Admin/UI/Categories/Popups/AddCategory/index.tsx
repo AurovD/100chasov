@@ -12,7 +12,7 @@ import ErrorPopup from "../../../../../../UI/Popups/ErrorPopup";
 
 
 
-const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
+const AddCategoryPopup: React.FC<{parent_id?: string}> = ({parent_id}) => {
 
     const[message, setMessage] = useState<string>('');
 
@@ -96,6 +96,4 @@ const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
 );
 };
 
-export default AddCategory;
-
-//TODO о
+export default AddCategoryPopup;

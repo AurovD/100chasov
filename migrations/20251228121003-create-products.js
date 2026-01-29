@@ -34,6 +34,10 @@ module.exports = {
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
       },
+      price: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       images: {
         type: Sequelize.JSON,
         defaultValue: []

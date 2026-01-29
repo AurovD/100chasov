@@ -1,16 +1,16 @@
 import React from "react";
-import styles from "./AddItem.module.scss";
+import styles from "./AddCategory.module.scss";
 import clsx from "clsx";
 import usePopupStore from "../../../../../UI/Popup/store";
-import AddCategory from "../Popups/AddCategory";
+import AddCategoryPopup from "../Popups/AddCategory";
 
-const AddItem: React.FC<{parent_id?: string}> = ({parent_id}) => {
+const AddCategory: React.FC<{parent_id?: string}> = ({parent_id}) => {
     const openPopup = usePopupStore((state) => state.openPopup);
     const changeContent = usePopupStore((state) => state.changeContent);
 
 
 
-    const addCategory = <AddCategory parent_id={parent_id}/>
+    const addCategory = <AddCategoryPopup parent_id={parent_id}/>
 
     const handleAddEvent = () => {
         openPopup();
@@ -42,4 +42,4 @@ const AddItem: React.FC<{parent_id?: string}> = ({parent_id}) => {
     )
 }
 
-export default AddItem;
+export default AddCategory;

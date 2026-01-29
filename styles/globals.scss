@@ -164,7 +164,7 @@ svg {
   display: flex;
   flex-direction: column;
 
-  .input {
+  .input, textarea {
     border: 1px solid var(--clr-neutral-200);
     border-radius: 4px;
     padding: 0 20px;
@@ -177,12 +177,34 @@ svg {
     border: none;
     font: 400 30px/2 var(--ff-primary);
   }
+  textarea {
+    outline: none;
+    width: 100%;
+    font: 400 20px/2 var(--ff-primary);
+    resize: vertical;
+  }
   .error {
     position: absolute;
     top: 5px;
     right: 5px;
     color: var(--clr-primary-400);
     font-size: 14px;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Для Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  /* Дополнительно для новых версий */
+  input[type="number"] {
+    appearance: textfield;
   }
   //button {
   //  margin-top: var(--size-500);

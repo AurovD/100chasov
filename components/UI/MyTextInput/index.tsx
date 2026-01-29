@@ -18,20 +18,21 @@ type SimpleFieldApi = {
 type MyTextInputProps = {
     field: SimpleFieldApi;
     name: string;
+    type?: string
 };
 
-export const MyTextInput: React.FC<MyTextInputProps> = ({ field, name}) => {
+export const MyTextInput: React.FC<MyTextInputProps> = ({ field, name, type = "text" }) => {
     const errors = field.state.meta.errors ?? [];
 
     return (
-            <input
-                className={clsx("relative", "input")}
-                type="text"
-                name={name}
-                value={field.state.value}
-                onChange={(e) => field.handleChange(e.target.value)}
-                onBlur={field.handleBlur}
-                // placeholder={title}
-            />
+      <input
+        className={clsx("relative", "input")}
+        type={type}
+        name={name}
+        value={field.state.value}
+        onChange={(e) => field.handleChange(e.target.value)}
+        onBlur={field.handleBlur}
+        // placeholder={title}
+      />
     );
 };

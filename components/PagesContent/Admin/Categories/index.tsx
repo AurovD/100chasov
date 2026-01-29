@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import React from "react";
-import AddItem from "../UI/Categories/AddItem";
+import AddCategory from "../UI/Categories/AddCategory";
 import useCategoriesStore from "../../../../store/categories";
 import { useQuery } from "@tanstack/react-query";
 import { CategoryType } from "../../../../types/categories";
@@ -18,7 +18,10 @@ const Category: React.FC<{
     categories: CategoryType[];
     handleEditEvent: (id: string, title: string) => void;
     handleRemoveEvent?: (id: string, title: string) => void;
-}> = ({ categories, handleEditEvent, handleRemoveEvent,}) => {
+    link?: string
+}> = ({ categories, handleEditEvent, handleRemoveEvent,
+                          link = "/admin/categories"}) => {
+    console.log(categories);
     return (
       <>
         {categories.length > 0 &&
@@ -27,12 +30,17 @@ const Category: React.FC<{
               key={String(category.id)}
               className={clsx(styles.category_container)}
             >
-              <Link
-                className={clsx(styles.logo_mobile)}
-                href={`/admin/categories/${category.link}`}
-              >
-                <p className={clsx(styles.category_title)}>{category.title}</p>
-              </Link>
+                <Link
+                  className={clsx(styles.logo_mobile)}
+                  href={`${link + "/" + category.link}`}
+                >
+                  <p className={clsx(styles.category_title)}>
+                    {category.title}
+                  </p>
+                </Link>
+              {/*) : (*/}
+              {/*  <p className={clsx(styles.category_title)}>{category.title}</p>*/}
+              {/*)}*/}
 
               {handleRemoveEvent &&
                 category.children &&
@@ -49,13 +57,14 @@ const Category: React.FC<{
                 Редактировать
               </div>
 
-              <AddItem parent_id={category.id} />
+              <AddCategory parent_id={category.id} />
 
               {category.children && category.children.length > 0 && (
                 <Category
                   categories={category.children}
                   handleRemoveEvent={handleRemoveEvent}
                   handleEditEvent={handleEditEvent}
+                  link={`${link + "/" + category.link}`}
                 />
               )}
             </div>
@@ -99,7 +108,7 @@ const Categories: NextPage = () => {
 
     return (
       <div>
-          <AddItem />
+          <AddCategory />
           <Category  categories={sortedCategories}
                  handleRemoveEvent={handleRemoveEvent}
                      handleEditEvent={handleEditEvent}
