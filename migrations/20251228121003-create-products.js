@@ -38,6 +38,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      ean: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       images: {
         type: Sequelize.JSON,
         defaultValue: []

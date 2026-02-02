@@ -8,4 +8,5 @@ export interface ProductsType {
     category_id: string;
     images: string[];
     message?: string;
+    ean: string;
 }

@@ -46,6 +46,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    ean: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     images: {
       type: DataTypes.JSON,
       defaultValue: []
