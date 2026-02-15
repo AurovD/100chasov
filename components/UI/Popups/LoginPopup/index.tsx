@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { useForm } from "@tanstack/react-form";
 import * as Yup from "yup";
-import { MyTextInput } from "components/UI/MyTextInput";
+import { MyTextInput } from "components/UI/Forms/MyTextInput";
 import Button from "../../Buttons/Button";
 import { useMutation } from '@tanstack/react-query';
 import {fetchRequest} from "../../../../helpers/fetch-request";

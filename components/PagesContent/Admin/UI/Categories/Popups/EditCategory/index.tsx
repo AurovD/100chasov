@@ -8,7 +8,7 @@ import {useUserStore} from "../../../../../../../store/user";
 import usePopupStore from "../../../../../../UI/Popup/store";
 import {useForm} from "@tanstack/react-form";
 import * as Yup from "yup";
-import {MyTextInput} from "../../../../../../UI/MyTextInput";
+import {MyTextInput} from "../../../../../../UI/Forms/MyTextInput";
 
 
 

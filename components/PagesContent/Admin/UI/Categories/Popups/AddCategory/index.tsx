@@ -2,7 +2,7 @@
 import React, {useRef, useState} from "react";
 import { useForm } from '@tanstack/react-form';
 import * as Yup from "yup";
-import {MyTextInput} from "../../../../../../UI/MyTextInput";
+import {MyTextInput} from "../../../../../../UI/Forms/MyTextInput";
 import Button from "../../../../../../UI/Buttons/Button";
 import useCategoriesStore from "../../../../../../../store/categories";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

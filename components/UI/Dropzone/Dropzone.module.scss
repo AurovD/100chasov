@@ -1,13 +1,13 @@
 .dropzone {
-  border: 2px solid black;
+  margin-top: var(--size-500);
+  width: 100%;
+  border: 2px dashed var(--clr-primary-400);
   padding: 20px;
   text-align: center;
   cursor: pointer;
+  height: 8em;
   &:focus {
     outline: none;
-  }
-  input {
-    width: 50px;
   }
 }
 
