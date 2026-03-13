@@ -8,6 +8,12 @@ import {fetchRequest} from "../../../../helpers/fetch-request";
 import {UserResponse} from "../../../../types/user";
 import {useUserStore} from "../../../../store/user";
 import usePopupStore from "../../Popup/store";
+import yupValidator from "../../Forms/Validator";
+import PhoneNumberInput from "../PhoneNumberInput";
+import {E164Number} from "libphonenumber-js";
+import clsx from "clsx";
+import styles from "../Phone/Phone.module.scss";
+import FormField from "../../Forms/FormField";
 
 const LoginPopup: React.FC = () => {
     const[message, setMessage] = useState<string>('');
@@ -50,36 +56,52 @@ const LoginPopup: React.FC = () => {
             form.handleSubmit();
         }}
               className="d-flex flex-column align-items-center form">
-            <form.Field
+            {/*<form.Field*/}
+            {/*    name="login"*/}
+            {/*    validators={{*/}
+            {/*        onChange: (value) => {*/}
+            {/*            try {*/}
+            {/*                Yup.string()*/}
+            {/*                    .required("Обязательное поле")*/}
+            {/*                    .min(3, "Должно быть не менее 3 символов")*/}
+            {/*                    .matches(/^[a-zA-Z0-9]{3,}$/, "Только латинские буквы и цифры")*/}
+            {/*                    .validateSync(value.value);*/}
+            {/*                return undefined;*/}
+            {/*            } catch (err: any) {*/}
+            {/*                return err.message;*/}
+            {/*            }*/}
+            {/*        },*/}
+            {/*    }}*/}
+            {/*>*/}
+            {/*    {(field) => (*/}
+            {/*        <label htmlFor="login" title="Введите имя нового пользователя" className="label">*/}
+            {/*            <MyTextInput field={field} name="login"/>*/}
+            {/*           {field.state.meta.errors?.length ? (*/}
+            {/*                field.state.meta.errors.map((err, i) => (*/}
+            {/*                    <div className="error" key={i}>{err}</div>*/}
+            {/*                ))*/}
+            {/*            ) : message ? (*/}
+            {/*                <div className="error">{message}</div>*/}
+            {/*            ) : null}*/}
+            {/*        </label>*/}
+            {/*    )}*/}
+            {/*</form.Field>*/}
+
+            <FormField
+                form={form}
                 name="login"
-                validators={{
-                    onChange: (value) => {
-                        try {
-                            Yup.string()
-                                .required("Обязательное поле")
-                                .min(3, "Должно быть не менее 3 символов")
-                                .matches(/^[a-zA-Z0-9]{3,}$/, "Только латинские буквы и цифры")
-                                .validateSync(value.value);
-                            return undefined;
-                        } catch (err: any) {
-                            return err.message;
-                        }
-                    },
-                }}
-            >
-                {(field) => (
-                    <label htmlFor="login" title="Введите имя нового пользователя" className="label">
-                        <MyTextInput field={field} name="login"/>
-                       {field.state.meta.errors?.length ? (
-                            field.state.meta.errors.map((err, i) => (
-                                <div className="error" key={i}>{err}</div>
-                            ))
-                        ) : message ? (
-                            <div className="error">{message}</div>
-                        ) : null}
-                    </label>
+                title="Введите имя нового пользователя"
+                validators={yupValidator(
+                    Yup.string()
+                        .required("Обязательное поле")
+                        .min(3, "Должно быть не менее 3 символов")
+                        .matches(/^[a-zA-Z0-9]{3,}$/, "Только латинские буквы и цифры")
                 )}
-            </form.Field>
+            >
+                {(field) =>
+                    <MyTextInput field={field} name="login"/>
+                }
+            </FormField>
 
             <Button className={"mt-5"} type="submit">Отправить</Button>
         </form>

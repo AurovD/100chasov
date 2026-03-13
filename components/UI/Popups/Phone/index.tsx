@@ -15,6 +15,8 @@ import { useForm } from '@tanstack/react-form';
 import * as Yup from 'yup';
 import {E164Number} from "libphonenumber-js";
 import {UserResponse} from "../../../../types/user";
+import yupValidator from "../../Forms/Validator";
+import FormField from "../../Forms/FormField";
 
 const Phone: NextPage = () => {
   const phoneRequest = useUserStore((state) => state.phone);
@@ -56,40 +58,26 @@ const Phone: NextPage = () => {
         form.handleSubmit();
       }}
     >
-      <form.Field
-        name="phone"
-        validators={{
-          onChange: (value) => {
-            try {
+      <FormField
+          form={form}
+          name="phone"
+          title="Введите номер телефона"
+          validators={yupValidator(
               Yup.string()
-                .required("Обязательное поле")
-                .min(12, "Неверный формат")
-                .max(12, "Неверный формат")
-                .validateSync(value.value);
-            } catch (error: any) {
-              return error.message;
-            }
-          },
-        }}
+                  .required("Обязательное поле")
+                  .min(12, "Неверный формат")
+                  .max(12, "Неверный формат")
+          )}
       >
-        {(field) => (
-          <label htmlFor="phone" title="Ваш телефон">
+        {(field) =>
             <PhoneNumberInput
-              name="phone"
-              value={field.state.value as E164Number | undefined}
-              onChange={(val) => field.handleChange(val ?? "")}
-              className={clsx(styles.input)}
+                name="phone"
+                value={field.state.value as E164Number | undefined}
+                onChange={(val) => field.handleChange(val ?? "")}
+                className={clsx(styles.input)}
             />
-            <div className={clsx(styles.error)}>
-              {[...(field.state.meta.errors ?? []), message]
-                .filter(Boolean)
-                .map((err, i) => (
-                  <div key={i}>{err}</div>
-                ))}
-            </div>
-          </label>
-        )}
-      </form.Field>
+        }
+      </FormField>
 
       <Button type="submit" disabled={mutation.isPending}>
         {mutation.isPending ? "Отправка..." : "Отправить"}

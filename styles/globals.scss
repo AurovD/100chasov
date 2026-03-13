@@ -210,29 +210,33 @@ svg {
   //button {
   //  margin-top: var(--size-500);
   //}
+}
+.label {
+  position: relative;
+  display: flex;
+  margin-top: var(--size-500);
 
-  label {
-    position: relative;
-    display: flex;
-    margin-top: var(--size-500);
-
-    &:before {
-      z-index: 10;
-      position: absolute;
-      left: 21px;
-      top: -10px;
-      content: attr(title);
-      display: block;
-      padding: 0 8px;
-      color: var(--clr-neutral-800);
-      font-size: 14px;
-      background: var(--clr-neutral-100);
-      box-sizing: border-box;
-    }
+  &:before {
+    z-index: 10;
+    position: absolute;
+    left: 21px;
+    top: -10px;
+    content: attr(title);
+    display: block;
+    padding: 0 8px;
+    color: var(--clr-neutral-800);
+    font-size: 14px;
+    background: var(--clr-neutral-100);
+    box-sizing: border-box;
   }
 }
- .error_text {
-   color: var(--clr-primary-400);
-   font-size: 14px;
-   margin-top: var(--size-500);
+ .error {
+       position: absolute;
+       top: 0;
+       right: 5px;
+       color: var(--clr-primary-400);
+       font-size: 14px;
  }
+
+
+

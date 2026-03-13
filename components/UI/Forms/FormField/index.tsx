@@ -1,6 +1,6 @@
 import React from "react";
 import { DeepKeys } from "@tanstack/react-form";
-import AddProduct from "../../../PagesContent/Admin/UI/Category/AddProduct";
+import styles from './FormField.module.scss';
 
 type FormFieldProps<TFormData> = {
     form: any;
@@ -22,12 +22,12 @@ function FormField<TFormData>({
     return (
         <form.Field name={name} validators={validators}>
             {(field: any) => (
-                <div className="label">
-                    {label && (
-                        <label htmlFor={String(name)} title={title}>
-                            {label}
-                        </label>
-                    )}
+                <label htmlFor={String(name)} title={title} className="label">
+                    {/*{label && (*/}
+                    {/*    <label htmlFor={String(name)} title={title}>*/}
+                    {/*        {label}*/}
+                    {/*    </label>*/}
+                    {/*)}*/}
 
                     {children(field)}
 
@@ -36,7 +36,7 @@ function FormField<TFormData>({
                             {err}
                         </div>
                     ))}
-                </div>
+                </label>
             )}
         </form.Field>
     );

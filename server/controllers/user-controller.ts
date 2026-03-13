@@ -6,7 +6,6 @@ import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import redis from '../../config/redis';
 import {JwtPayload} from "jsonwebtoken";
-import * as process from "node:process";
 
 
 declare module "express-serve-static-core" {
@@ -92,7 +91,6 @@ class UserController {
         try {
             const { login } = req.body;
             const userId = req.user?.id;
-
 
             if (!userId || !login) {
                 res.status(400).json({ success: false, message: "Некорректные данные" });

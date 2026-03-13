@@ -10,7 +10,7 @@ import { UserResponse } from '../types/user';
 export interface UserStore {
   user: User | null;
   token: string;
-  phone: (phone: string, reload?: boolean) => Promise<UserResponse>;
+  phone: (phone: string) => Promise<UserResponse>;
   code: (code: string) => Promise<UserResponse>;
   me: () => Promise<UserResponse>;
 }
@@ -19,12 +19,12 @@ export const useUserStore = createStore<UserStore>(
   (set, get) => ({
       user: null,
       token: "",
-      phone: async (phone: string, reload?: boolean,) => {
-          if (reload) {
-            set({
-              user: null,
-            });
-          }
+      phone: async (phone: string) => {
+          // if (reload) {
+          //   set({
+          //     user: null,
+          //   });
+          // }
 
           return await fetchRequest(
             "/user/request_code",

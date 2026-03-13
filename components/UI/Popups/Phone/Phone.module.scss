@@ -16,31 +16,31 @@
     font: 400 30px/2 var(--ff-primary);
   }
 
-  label {
-    position: relative;
-    display: flex;
-    margin-top: var(--size-500);
-
-    .error {
-      position: absolute;
-      top: 0;
-      right: 5px;
-      color: var(--clr-primary-400);
-      font-size: 14px;
-    }
-
-    &:before {
-      z-index: 10;
-      position: absolute;
-      left: 21px;
-      top: -10px;
-      content: attr(title);
-      display: block;
-      padding: 0 8px;
-      color: var(--clr-neutral-800);
-      font-size: 14px;
-      background: var(--clr-neutral-100);
-      box-sizing: border-box;
-    }
-  }
+  //label {
+  //  position: relative;
+  //  display: flex;
+  //  margin-top: var(--size-500);
+  //
+  //  .error {
+  //    position: absolute;
+  //    top: 0;
+  //    right: 5px;
+  //    color: var(--clr-primary-400);
+  //    font-size: 14px;
+  //  }
+  //
+  //  &:before {
+  //    z-index: 10;
+  //    position: absolute;
+  //    left: 21px;
+  //    top: -10px;
+  //    content: attr(title);
+  //    display: block;
+  //    padding: 0 8px;
+  //    color: var(--clr-neutral-800);
+  //    font-size: 14px;
+  //    background: var(--clr-neutral-100);
+  //    box-sizing: border-box;
+  //  }
+  //}
 }

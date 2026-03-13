@@ -28,7 +28,7 @@ const CodePopup: React.FC = () => {
 
 
     const handleCodeEvent = (data: UserResponse) => {
-        if (data.success && data.user.updatedAt === data.user.createdAt) {
+        if (data.success && data.user.updatedAt !== data.user.createdAt) {
             changeContent("Имя нового пользователя", <LoginPopup />);
         } else if (data.success){
              closePopup();
