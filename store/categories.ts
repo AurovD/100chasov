@@ -18,7 +18,7 @@ const useCategoriesStore = createStore<CategoriesState>(
         const token = useUserStore.getState().token;
 
         const data: CategoryType = await fetchRequest(
-            "/admin/category/add_category",
+            "/admin/category/create",
             "POST",
             { title, parent_id },
             token
@@ -49,7 +49,7 @@ const useCategoriesStore = createStore<CategoriesState>(
               });
 
               const data: CategoryType[] = await fetchRequest(
-                  "/admin/category",
+                  "/admin/categories",
                   "GET",
                   undefined,
                   token

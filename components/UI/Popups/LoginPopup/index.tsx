@@ -56,36 +56,6 @@ const LoginPopup: React.FC = () => {
             form.handleSubmit();
         }}
               className="d-flex flex-column align-items-center form">
-            {/*<form.Field*/}
-            {/*    name="login"*/}
-            {/*    validators={{*/}
-            {/*        onChange: (value) => {*/}
-            {/*            try {*/}
-            {/*                Yup.string()*/}
-            {/*                    .required("Обязательное поле")*/}
-            {/*                    .min(3, "Должно быть не менее 3 символов")*/}
-            {/*                    .matches(/^[a-zA-Z0-9]{3,}$/, "Только латинские буквы и цифры")*/}
-            {/*                    .validateSync(value.value);*/}
-            {/*                return undefined;*/}
-            {/*            } catch (err: any) {*/}
-            {/*                return err.message;*/}
-            {/*            }*/}
-            {/*        },*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    {(field) => (*/}
-            {/*        <label htmlFor="login" title="Введите имя нового пользователя" className="label">*/}
-            {/*            <MyTextInput field={field} name="login"/>*/}
-            {/*           {field.state.meta.errors?.length ? (*/}
-            {/*                field.state.meta.errors.map((err, i) => (*/}
-            {/*                    <div className="error" key={i}>{err}</div>*/}
-            {/*                ))*/}
-            {/*            ) : message ? (*/}
-            {/*                <div className="error">{message}</div>*/}
-            {/*            ) : null}*/}
-            {/*        </label>*/}
-            {/*    )}*/}
-            {/*</form.Field>*/}
 
             <FormField
                 form={form}

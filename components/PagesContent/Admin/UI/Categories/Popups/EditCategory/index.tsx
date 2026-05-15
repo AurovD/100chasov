@@ -22,10 +22,12 @@ const EditCategory: React.FC<{category_id: string, title: string}> = ({ category
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: addCategory,
+        mutationFn: async (queryClient) => {
+            console.log(queryClient);
+        },
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["categories"] });
-            setMessage("Категория успешно добавлена ✅");
+            setMessage("Категория успешно изменена");
             closePopup();
         }
         // onError: () => handleErrorEvent(),
@@ -38,7 +40,6 @@ const EditCategory: React.FC<{category_id: string, title: string}> = ({ category
         onSubmit: async ({ value }) => {
             mutation.mutate({
                 title: value.title,
-                // parent_id,
             });
         },
     });

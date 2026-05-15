@@ -35,7 +35,7 @@ const AddProduct: NextPage = () => {
                 <FormField
                     form={form}
                     name="title"
-                    label="Название"
+                    title="Введите название товара"
                     validators={yupValidator(
                         Yup.string()
                             .required("Обязательное поле")
@@ -48,7 +48,7 @@ const AddProduct: NextPage = () => {
                 <FormField
                     form={form}
                     name="description"
-                    label="Описание"
+                    title="Введите описание название товара"
                 >
                     {(field) => (
                         <textarea
@@ -62,7 +62,7 @@ const AddProduct: NextPage = () => {
                 <FormField
                     form={form}
                     name="price"
-                    label="Цена"
+                    title="Введите цену товара"
                     validators={yupValidator(Yup.string().required("Обязательное поле"))}
                 >
                     {(field) => (
@@ -73,7 +73,7 @@ const AddProduct: NextPage = () => {
                 <FormField
                     form={form}
                     name="count"
-                    label="Количество"
+                    title="Введите количество товара"
                     validators={yupValidator(Yup.string().required("Обязательное поле"))}
                 >
                     {(field) => (
@@ -84,7 +84,7 @@ const AddProduct: NextPage = () => {
                 <FormField
                     form={form}
                     name="ean"
-                    label="EAN"
+                    title="Введите EAN товара"
                     validators={yupValidator(Yup.string().required("Обязательное поле"))}
                 >
                     {(field) => <MyTextInput field={field} name="ean" />}

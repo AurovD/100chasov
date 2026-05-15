@@ -1,11 +1,10 @@
 import express from 'express';
 import CategoriesService from "../services/categories-service";
 import { log } from 'console';
-import {slugify} from "../../helpers/slugify";
 
 
-class CategoriesController {
-    async addCategory(req: express.Request, res: express.Response): Promise<any> {
+class CategoriesAdminController {
+    async create(req: express.Request, res: express.Response): Promise<any> {
         try {
             const { title, parent_id } = req.body;
 
@@ -28,7 +27,7 @@ class CategoriesController {
         }
     }
 
-    async getCategory(req: express.Request, res: express.Response): Promise<any> {
+    async get(req: express.Request, res: express.Response): Promise<any> {
         try {
             const result = await CategoriesService.getCategories();
             return res.status(200).json(result);
@@ -38,7 +37,7 @@ class CategoriesController {
         }
     }
 
-    async removeCategory(req: express.Request, res: express.Response): Promise<any> {
+    async delete(req: express.Request, res: express.Response): Promise<any> {
         try {
             const id  = req.query.id;
 
@@ -88,6 +87,6 @@ class CategoriesController {
     //         return res.status(500).json({ success: false, message: "Ошибка сервера", error: error.message });
     //     }}
 }
-export default new CategoriesController();
+export default new CategoriesAdminController();
 
 //npx sequelize-cli model:generate --name UserRefreshTokens --attributes id:string,refreshToken:string,userId:string

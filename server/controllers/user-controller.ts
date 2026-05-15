@@ -87,7 +87,7 @@ class UserController {
             user,
         });
     }
-    async login(req: express.Request, res: express.Response): Promise<void> {
+    async login (req: express.Request, res: express.Response): Promise<void> {
         try {
             const { login } = req.body;
             const userId = req.user?.id;

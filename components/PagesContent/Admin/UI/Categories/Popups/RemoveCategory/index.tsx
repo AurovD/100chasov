@@ -20,7 +20,7 @@ const RemoveCategory: React.FC<{category_id: string, title: string}> = ({ catego
 
     const mutation = useMutation({
         mutationFn: async (): Promise<{     success: boolean;     message: string; }>  => {
-            return await fetchRequest(`/admin/category/remove?id=${category_id}`, "DELETE", undefined, token);
+            return await fetchRequest(`/admin/category/delete?id=${category_id}`, "DELETE", undefined, token);
         },
         onSuccess: (data: {success: boolean, message: string}) => {
             if(!data.success){

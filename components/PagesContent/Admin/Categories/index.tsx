@@ -21,7 +21,6 @@ const Category: React.FC<{
     link?: string
 }> = ({ categories, handleEditEvent, handleRemoveEvent,
                           link = "/admin/categories"}) => {
-    console.log(categories);
     return (
       <>
         {categories.length > 0 &&
