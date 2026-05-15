@@ -3,7 +3,6 @@ import React, {useState} from "react";
 import Button from "../../../../../../UI/Buttons/Button";
 import {fetchRequest} from "../../../../../../../helpers/fetch-request";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
-import useCategoriesStore from "../../../../../../../store/categories";
 import {useUserStore} from "../../../../../../../store/user";
 import usePopupStore from "../../../../../../UI/Popup/store";
 import {useForm} from "@tanstack/react-form";
@@ -15,20 +14,28 @@ import {MyTextInput} from "../../../../../../UI/Forms/MyTextInput";
 const EditCategory: React.FC<{category_id: string, title: string}> = ({ category_id, title }) => {
 
     const[message, setMessage] = useState<string>('');
-
-    const addCategory = useCategoriesStore(state => state.addCategory);
+    const token = useUserStore(state => state.token);
     const closePopup = usePopupStore((state) => state.closePopup);
 
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: async (queryClient) => {
+        mutationFn: async (queryClient: { title: string }): Promise<{     success: boolean;     message: string; }> => {
             console.log(queryClient);
+            return await fetchRequest(`/admin/categories/patch?id=${category_id}`, "PATCH", queryClient, token);
         },
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["categories"] });
-            setMessage("Категория успешно изменена");
-            closePopup();
+        onSuccess: async (data: {success: boolean, message: string}) => {
+            console.log(data);
+            if(!data.success){
+                setMessage(data.message);
+            } else {
+                queryClient.invalidateQueries({ queryKey: ["categories"] });
+                setMessage("");
+                closePopup();
+            }
+            // await queryClient.invalidateQueries({ queryKey: ["categories"] });
+            // setMessage("Категория успешно изменена");
+            // closePopup();
         }
         // onError: () => handleErrorEvent(),
     });
@@ -38,6 +45,7 @@ const EditCategory: React.FC<{category_id: string, title: string}> = ({ category
             title: title,
         },
         onSubmit: async ({ value }) => {
+            console.log(value);
             mutation.mutate({
                 title: value.title,
             });

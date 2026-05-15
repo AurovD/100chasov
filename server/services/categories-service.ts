@@ -39,6 +39,15 @@ class CategoriesService {
             }
         })
     }
+    async editTitle(title: string, id: string) {
+        return await Categories.update({
+            title
+        },{
+            where: {
+                id
+            },
+        })
+    }
 }
 
 

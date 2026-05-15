@@ -64,28 +64,31 @@ class CategoriesAdminController {
             return res.status(500).json({ success: false, message: "Ошибка сервера", error: error.message });
         }
     }
-    //
-    // // ✅ Обновить категорию
-    // async updateCategory(req: express.Request, res: express.Response): Promise<any> {
-    //     try {
-    //         const { id } = req.params;
-    //         const { title, parent_id } = req.body;
-    //
-    //         if (!id) {
-    //             return res.status(400).json({ success: false, message: "ID категории не указан" });
-    //         }
-    //
-    //         const updated = await CategoriesService.updateCategory(id, { title, parent_id });
-    //
-    //         if (!updated) {
-    //             return res.status(404).json({ success: false, message: "Категория не найдена" });
-    //         }
-    //
-    //         return res.status(200).json({ success: true, data: updated });
-    //     } catch (error: any) {
-    //         console.error("Ошибка при обновлении категории:", error);
-    //         return res.status(500).json({ success: false, message: "Ошибка сервера", error: error.message });
-    //     }}
+
+
+    async patch(req: express.Request, res: express.Response): Promise<any> {
+        try {
+            log(req.body, req.query, "khljl");
+            const id  = req.query.id;
+
+            if (!id || typeof id !== "string") {
+                return res.status(400).json({ success: false, message: "Некорректный ID категории" });
+            }
+            if (req.body.title.length <= 3) {
+                return res.status(400).json({ success: false, message: "Некорректная длина" });
+            }
+
+            const result = await CategoriesService.editTitle(req.body.title, id);
+
+            if(result[0]){
+                return res.status(200).json({ success: true, message: "Категория изменена" });
+            }
+
+        } catch (error: any) {
+            console.error("Ошибка при обновлении категории:", error);
+            return res.status(500).json({ success: false, message: "Ошибка сервера", error: error.message });
+        }
+    }
 }
 export default new CategoriesAdminController();
 
